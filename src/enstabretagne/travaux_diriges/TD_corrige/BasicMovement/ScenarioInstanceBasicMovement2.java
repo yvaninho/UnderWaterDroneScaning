@@ -57,6 +57,8 @@ public class ScenarioInstanceBasicMovement2 implements IScenarioInstance {
 		bsf.getNavires().put(new EntityNavireFeature("NavireF", 5, 3, Color.DARKSLATEGREY, feat),
 				new EntityNavireInit("Navire Observation", msi));
 
+		
+		
 		// création des artefactes on a entre 30 et 40 artefactes suivant une lois
 		// uniforme
 
