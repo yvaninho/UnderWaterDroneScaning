@@ -1,0 +1,22 @@
+{
+	"classToFilter": [
+        "enstabretagne.simulation.core.implementation.SimObject",
+        "enstabretagne.simulation.core.implementation.SimEngine",
+        "enstabretagne.monitor.implementation.FX3DMonitor2",
+        "enstabretagne.simulation.core.implementation.SimObjectDictionary"
+    ],
+    "loggerConfs": [
+        {
+            "parametres": {
+                "FileName": "BasicMovement.xlsx",
+                "LoggerKind": "enstabretagne.base.logger.loggerimpl.Excel.ExcelDataLogger",
+                "DirectoryName": ".\\log"
+            }
+        },
+        {
+            "parametres": {
+                "LoggerKind": "enstabretagne.base.logger.loggerimpl.stdoutput.SortieTexteLogger"
+            }
+        }
+    ]
+}
