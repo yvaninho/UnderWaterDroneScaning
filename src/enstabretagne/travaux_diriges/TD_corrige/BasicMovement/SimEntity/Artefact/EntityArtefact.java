@@ -8,6 +8,7 @@ import enstabretagne.simulation.components.data.SimFeatures;
 import enstabretagne.simulation.components.data.SimInitParameters;
 import enstabretagne.simulation.components.implementation.SimEntity;
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Artefact.Representation3D.EntityArtefact3DRepresentationInterface;
+import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Artefact.Representation3D.TypeArtefact;
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.MouvementSequenceur.EntityMouvementSequenceur;
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.MouvementSequenceur.EntityMouvementSequenceur_Exemple;
 import javafx.geometry.Point3D;
@@ -118,6 +119,20 @@ public class EntityArtefact extends SimEntity implements IMovable, EntityArtefac
 	public double getLongueur() {
 		return aretefactFeatures.getTaille();
 	}
+
+	@Override
+	public TypeArtefact getType() {
+		// TODO Auto-generated method stub
+		return aretefactFeatures.getTypeArtefact() ;
+	}
+	
+	
+	/*@Override
+	public TypeArtefact getType() {
+		// TODO Auto-generated method stub
+		return aretefactFeatures.getTypeArtefact();
+		
+	}*/
 
 
 }

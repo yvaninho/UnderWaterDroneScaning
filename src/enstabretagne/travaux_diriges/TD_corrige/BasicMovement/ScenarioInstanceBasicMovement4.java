@@ -24,7 +24,7 @@ import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Ocean.En
 import javafx.geometry.Point3D;
 import javafx.scene.paint.Color;
 
-public class ScenarioInstanceBasicMovement2 implements IScenarioInstance {
+public class ScenarioInstanceBasicMovement4 implements IScenarioInstance {
 
 	@Override
 	public IScenario getScenarioInstance() {
@@ -77,9 +77,9 @@ public class ScenarioInstanceBasicMovement2 implements IScenarioInstance {
 					new Point3D(10, 5, 0.0), Point3D.ZERO);
 			msi = new EntityMouvementSequenceurInit("Artefact MSI", mst, 10, 100, 2, 8, positionsCles);
 			feat = new EntityMouvementSequenceurFeature("Artefact MSF");
-			bsf.getArtefactes().put(new EntityArtefactFeature("Artefact"+i, 5, 3, Color.RED, feat),
+	/*		bsf.getArtefactes().put(new EntityArtefactFeature("Artefact"+i, 5, 3, Color.RED, feat),
 					new EntityArtefactInit("Artefact Observation 1", msi));
-
+*/
 		}
 
 		for (int i = 0; i < (int) (nombreArtefacts * proportionCylindreJaune); i++) {
@@ -90,9 +90,9 @@ public class ScenarioInstanceBasicMovement2 implements IScenarioInstance {
 					new Point3D(10, 5, 0.0), Point3D.ZERO);
 			msi = new EntityMouvementSequenceurInit("Artefact MSI", mst, 10, 100, 2, 8, positionsCles);
 			feat = new EntityMouvementSequenceurFeature("Artefact MSF");
-			bsf.getArtefactes().put(new EntityArtefactFeature("Artefact"+i, 5, 3, Color.YELLOW, feat),
+		/*/	bsf.getArtefactes().put(new EntityArtefactFeature("Artefact"+i, 5, 3, Color.YELLOW, feat),
 					new EntityArtefactInit("Artefact Observation "+i, msi));
-
+*/
 		}
 
 		for (int i = 0; i < (int) (nombreArtefacts * proportionCubeVert); i++) {
@@ -103,9 +103,9 @@ public class ScenarioInstanceBasicMovement2 implements IScenarioInstance {
 					new Point3D(10, 5, 0.0), Point3D.ZERO);
 			msi = new EntityMouvementSequenceurInit("Artefact MSI", mst, 10, 100, 2, 8, positionsCles);
 			feat = new EntityMouvementSequenceurFeature("Artefact MSF");
-			bsf.getArtefactes().put(new EntityArtefactFeature("Artefact", 5, 3, Color.GREEN, feat),
+		/*/	bsf.getArtefactes().put(new EntityArtefactFeature("Artefact", 5, 3, Color.GREEN, feat),
 					new EntityArtefactInit("Artefact Observation "+i, msi));
-
+*/
 		}
 
 		// Création de bouees

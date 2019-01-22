@@ -29,7 +29,7 @@ public class EntityOcean3DRepresentation extends Representation3D {
 		OceanMaterial.setDiffuseColor(Color.BLACK);
 
 		double size = 20000;
-		double epaisseurs = 10;
+		double epaisseurs = 300000;
 		Group g = new Group();
 
 		double alpha0 = 0.1;

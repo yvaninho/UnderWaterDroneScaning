@@ -15,44 +15,47 @@ import javafx.scene.transform.Rotate;
 
 @Contrat3D(contrat = EntityNavire3DRepresentationInterface.class)
 public class EntityNavire3DRepresentation extends Representation3D {
-
+	
 	public EntityNavire3DRepresentation(ObjTo3DMappingSettings settings) {
 		super(settings);
 	}
 
 	EntityNavire3DRepresentationInterface Navire3D;
 	Group bateau;
-	int r1 = 7;
-	int h = 15;
-
-	// ici mettre les objets3D représentant l'entité
-	// Sphere sph;
+	int r1=10;
+	int h=10;
+	//int h=15;
+	
+	//ici mettre les objets3D représentant l'entité 
+	//Sphere sph;
 
 	@Override
 	public void init(Group world, Object obj) {
 		Navire3D = (EntityNavire3DRepresentationInterface) obj;
-		bateau = new Group();
-		PhongMaterial material = new PhongMaterial(Navire3D.getColor());
+	    bateau = new Group();
+	    
+	    
+	    PhongMaterial material = new PhongMaterial(Navire3D.getColor());
 
-		Cylinder cy = new Cylinder(r1, h * 2);
-		cy.setMaterial(material);
-		cy.setRotationAxis(Rotate.Z_AXIS);
-		cy.setRotate(90.0);
-		cy.setTranslateX(-h / 2);
-		bateau.getChildren().add(cy);
+	    Cylinder cy = new Cylinder(r1, h*2);
+	    cy.setMaterial(material);
+	    cy.setRotationAxis(Rotate.Z_AXIS);
+	    cy.setRotate(90.0);
+	    cy.setTranslateX(-h/2);
+	    bateau.getChildren().add(cy);
 
-		Sphere s = new Sphere(r1);
-		s.setMaterial(material);
-		s.setTranslateX(h / 2);
-		bateau.getChildren().add(s);
-
-		double c = r1;
-		Box b = new Box(c, c, c);
-		material = new PhongMaterial(Color.BLUEVIOLET);
-		b.setMaterial(material);
-		b.setTranslateZ(r1);
-		b.setTranslateX(h / 2 - c);
-		bateau.getChildren().add(b);
+	    Sphere s = new Sphere(r1);
+	    s.setMaterial(material);
+	    s.setTranslateX(h/2);
+	    bateau.getChildren().add(s);
+	    
+	    double c = r1;
+	    Box b = new Box(c,c,c);
+	    material = new PhongMaterial(Color.BLUEVIOLET);
+	    b.setMaterial(material);
+	    b.setTranslateZ(r1);
+	    b.setTranslateX(h/2-c);
+	    bateau.getChildren().add(b);
 		world.getChildren().add(bateau);
 
 	}
@@ -64,9 +67,11 @@ public class EntityNavire3DRepresentation extends Representation3D {
 		bateau.setTranslateX(p.getX());
 		bateau.setTranslateY(p.getY());
 		bateau.setTranslateZ(p.getZ());
+		
 		Point3D rot = Navire3D.getRotationXYZ();
 		addRotate(bateau, rot);
 
 	}
+
 
 }
