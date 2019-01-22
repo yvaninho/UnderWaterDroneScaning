@@ -1,5 +1,7 @@
 package enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.MouvementSequenceur;
 
+import java.util.HashMap;
+
 import enstabretagne.base.logger.ToRecord;
 
 import enstabretagne.base.time.LogicalDateTime;
@@ -21,7 +23,6 @@ public class EntityMouvementSequenceur extends SimEntity implements IMover {
 	protected SelfRotator selfRotator;
 	protected IMover mv;
 	protected EntityMouvementSequenceurInit ini;
-
 	public EntityMouvementSequenceur(String name, SimFeatures features) {
 		super(name, features);
 	}
@@ -30,7 +31,7 @@ public class EntityMouvementSequenceur extends SimEntity implements IMover {
 	public void onParentSet() {
 
 	}
-
+	
 	@Override
 	protected void initializeSimEntity(SimInitParameters init) {
 		ini = ((EntityMouvementSequenceurInit) getInitParameters());
@@ -97,4 +98,12 @@ public class EntityMouvementSequenceur extends SimEntity implements IMover {
 		return mv.getAccelerationRotationXYZ(d);
 	}
 
+	public void setPointsClefs(HashMap<String, Point3D> pointsClefs, int nbPoints) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public  void  setPointsClefs(HashMap<String, Point3D> pointsClefs){
+
+	}
 }

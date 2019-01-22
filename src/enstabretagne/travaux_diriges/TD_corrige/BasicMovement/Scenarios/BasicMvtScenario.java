@@ -17,6 +17,9 @@ import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Artefact
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Bouee.Bouee;
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Bouee.BoueeFeatures;
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Bouee.BoueeInit;
+import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Drone.EntityDrone;
+import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Drone.EntityDroneFeature;
+import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Drone.EntityDroneInit;
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Navire.EntityNavire;
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Navire.EntityNavireFeature;
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Navire.EntityNavireInit;
@@ -63,6 +66,12 @@ public class BasicMvtScenario extends SimScenario{
 		}	
 		
 		
+		for(Map.Entry<EntityDroneFeature, EntityDroneInit> e : feature.getDrones().entrySet() )
+		{
+			Logger.Detail(this, "afteractivate", "Drone  à créer = %s , %s", e.getValue(),e.getKey());
+			Post(new DroneArrival(e.getValue(),e.getKey()));
+		}	
+				
 		
 		for(Map.Entry<EntityOceanFeature, EntityOceanInit> e : feature.getOcean().entrySet())
 		{
@@ -115,6 +124,7 @@ public class BasicMvtScenario extends SimScenario{
 		}
 		
 		
+		
 		public NavireArrival(EntityNavireInit i, EntityNavireFeature f) {
 			this.i=i;
 			this.f=f;
@@ -130,6 +140,39 @@ public class BasicMvtScenario extends SimScenario{
 		
 	}
 
+
+
+
+	class DroneArrival extends SimEvent
+	{
+		private EntityDroneInit i;
+		private EntityDroneFeature f;
+		
+		public EntityDroneInit getI() {
+			return i;
+		}
+		
+		public EntityDroneFeature getF() {
+			return f;
+		}
+		
+		
+		public DroneArrival(EntityDroneInit i, EntityDroneFeature f) {
+			this.i=i;
+			this.f=f;
+		}
+
+		@Override
+		public void Process() {
+			Logger.Detail(this, "DroneArrival.Process", "Création du Navire" + i);
+			SimEntity b = createChild(EntityDrone.class, i.getName() , f);
+			b.initialize(getI());
+			b.activate();
+		}
+		
+	}
+
+	
 	class OceanArrival extends SimEvent
 	{
 		private EntityOceanInit i;

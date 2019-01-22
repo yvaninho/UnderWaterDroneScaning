@@ -11,13 +11,13 @@
             "Representation3DAMapper": "enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Navire.Representation3D.EntityNavire3DRepresentation",
             "level4Trasparency": 5
         },
+
         {
-            "classeObjetAMapper": "enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Navire.EntityNavire",
-            "Representation3DAMapper": "enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Navire.Representation3D.EntityNavire3DRepresentation",
+            "classeObjetAMapper": "enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Drone.EntityDrone",
+            "Representation3DAMapper": "enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Drone.Representation3D.EntityDrone3DRepresentation",
             "level4Trasparency": 5
-        },   
-        
-        
+        }
+        ,   
         {
             "classeObjetAMapper": "enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Ocean.EntityOcean",
             "Representation3DAMapper": "enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Ocean.Representation3D.EntityOcean3DRepresentation",
@@ -32,4 +32,5 @@
     "entiteASuivre": "Navire Observation",    
     "frameparseconde": 25
 }
+
 

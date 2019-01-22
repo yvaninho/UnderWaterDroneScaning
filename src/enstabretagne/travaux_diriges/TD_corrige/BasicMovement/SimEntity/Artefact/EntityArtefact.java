@@ -9,7 +9,7 @@ import enstabretagne.simulation.components.data.SimInitParameters;
 import enstabretagne.simulation.components.implementation.SimEntity;
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Artefact.Representation3D.EntityArtefact3DRepresentationInterface;
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.MouvementSequenceur.EntityMouvementSequenceur;
-import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.MouvementSequenceur.EntityMouvementSequenceur_Exemple;
+import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.MouvementSequenceur.EntityMouvementSequenceur_Exemple1;
 import javafx.geometry.Point3D;
 import javafx.scene.paint.Color;
 
@@ -34,7 +34,7 @@ public class EntityArtefact extends SimEntity implements IMovable, EntityArtefac
 	protected void initializeSimEntity(SimInitParameters init) {
 		artefactInit = (EntityArtefactInit) getInitParameters();
 
-		rmv = (EntityMouvementSequenceur_Exemple) createChild(EntityMouvementSequenceur_Exemple.class, "monSequenceur",
+		rmv = (EntityMouvementSequenceur_Exemple1) createChild(EntityMouvementSequenceur_Exemple1.class, "monSequenceur",
 				((EntityArtefactFeature) getFeatures()).getSeqFeature());
 		rmv.initialize(artefactInit.getMvtSeqInitial());
 

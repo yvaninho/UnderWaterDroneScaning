@@ -7,6 +7,8 @@ import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Artefact
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Artefact.EntityArtefactInit;
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Bouee.BoueeFeatures;
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Bouee.BoueeInit;
+import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Drone.EntityDroneFeature;
+import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Drone.EntityDroneInit;
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Navire.EntityNavireFeature;
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Navire.EntityNavireInit;
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Ocean.EntityOceanFeature;
@@ -18,6 +20,7 @@ public class BasicMvtScenarioFeatures extends SimFeatures {
 	private HashMap<EntityArtefactFeature, EntityArtefactInit> artefactes;
 	private HashMap<EntityNavireFeature, EntityNavireInit> navires;
 	private HashMap<EntityOceanFeature, EntityOceanInit> ocean;
+	private HashMap<EntityDroneFeature, EntityDroneInit> drones;
 
 	public HashMap<EntityOceanFeature, EntityOceanInit> getOcean() {
 		return ocean;
@@ -35,12 +38,17 @@ public class BasicMvtScenarioFeatures extends SimFeatures {
 		return artefactes;
 	}
 
+	public HashMap<EntityDroneFeature, EntityDroneInit> getDrones() {
+		return drones;
+	}
+	
 	public BasicMvtScenarioFeatures(String id) {
 		super(id);
 		bouees = new HashMap<>();
 		navires = new HashMap<>();
 		ocean = new HashMap<>();
 		artefactes = new HashMap<>();
+		drones = new HashMap<>();
 	}
 
 }

@@ -7,22 +7,22 @@ import enstabretagne.simulation.components.IEntity;
 import enstabretagne.simulation.components.data.SimFeatures;
 import enstabretagne.simulation.components.data.SimInitParameters;
 import enstabretagne.simulation.components.implementation.SimEntity;
+import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Drone.Representation3D.EntityDrone3DRepresentationInterface;
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.MouvementSequenceur.EntityMouvementSequenceur;
-import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.MouvementSequenceur.EntityMouvementSequenceur_Exemple;
-import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Navire.Representation3D.EntityNavire3DRepresentationInterface;
+import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.MouvementSequenceur.EntityMouvementSequenceur_Exemple1;
 import javafx.geometry.Point3D;
 import javafx.scene.paint.Color;
 
-@ToRecord(name = "Navire")
-public class EntityDrone extends SimEntity implements IMovable, EntityNavire3DRepresentationInterface {
+@ToRecord(name = "Drone")
+public class EntityDrone extends SimEntity implements IMovable, EntityDrone3DRepresentationInterface {
 
 	private EntityMouvementSequenceur rmv;
-	private EntityDroneInit NavireInit;
-	private EntityDroneFeature NavireFeature;
+	private EntityDroneInit Dronenit;
+	private EntityDroneFeature droneFeature;
 
 	public EntityDrone(String name, SimFeatures features) {
 		super(name, features);
-		NavireFeature = (EntityDroneFeature) features;
+		droneFeature = (EntityDroneFeature) features;
 	}
 
 	@Override
@@ -32,11 +32,13 @@ public class EntityDrone extends SimEntity implements IMovable, EntityNavire3DRe
 
 	@Override
 	protected void initializeSimEntity(SimInitParameters init) {
-		NavireInit = (EntityDroneInit) getInitParameters();
+		Dronenit = (EntityDroneInit) getInitParameters();
 
-		rmv = (EntityMouvementSequenceur_Exemple) createChild(EntityMouvementSequenceur_Exemple.class, "monSequenceur",
+		rmv = (EntityMouvementSequenceur_Exemple1) createChild(EntityMouvementSequenceur_Exemple1.class, "monSequenceur",
 				((EntityDroneFeature) getFeatures()).getSeqFeature());
-		rmv.initialize(NavireInit.getMvtSeqInitial());
+		rmv.initialize(Dronenit.getMvtSeqInitial());
+		// On définit les points clefs 
+		rmv.setPointsClefs(Dronenit.getPointsCles(), Dronenit.getNbPoints()) ;
 
 	}
 
@@ -106,17 +108,17 @@ public class EntityDrone extends SimEntity implements IMovable, EntityNavire3DRe
 
 	@Override
 	public Color getColor() {
-		return NavireFeature.getCouleur();
+		return droneFeature.getCouleur();
 	}
 
 	@Override
 	public double getRayon() {
-		return NavireFeature.getRayon();
+		return droneFeature.getRayon();
 	}
 
 	@Override
 	public double getLongueur() {
-		return NavireFeature.getTaille();
+		return droneFeature.getTaille();
 	}
 
 }

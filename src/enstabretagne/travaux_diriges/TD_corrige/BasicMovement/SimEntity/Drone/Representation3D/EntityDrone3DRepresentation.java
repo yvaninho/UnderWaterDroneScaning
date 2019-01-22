@@ -22,8 +22,8 @@ public class EntityDrone3DRepresentation extends Representation3D {
 
 	EntityDrone3DRepresentationInterface Navire3D;
 	Group bateau;
-	int r1 = 7;
-	int h = 15;
+	int r1 = 3;
+	int h = 5;
 
 	// ici mettre les objets3D représentant l'entité
 	// Sphere sph;

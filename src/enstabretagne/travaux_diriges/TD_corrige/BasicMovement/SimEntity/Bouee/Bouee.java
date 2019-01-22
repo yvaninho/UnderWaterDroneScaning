@@ -18,6 +18,8 @@ public class Bouee extends SimEntity implements IMovable,IBoueeRepresentation3D{
 
 	
 	private EntityMouvementSequenceur rmv;
+	private boolean isDetected = false ;
+
 
 	public Bouee(String name, SimFeatures features) {
 		super(name, features);
@@ -108,6 +110,14 @@ public class Bouee extends SimEntity implements IMovable,IBoueeRepresentation3D{
 	@Override
 	public Point3D getRotationXYZ() {
 		return rmv.getRotationXYZ(getCurrentLogicalDate());
+	}
+
+	public boolean isDetected() {
+		return isDetected;
+	}
+
+	public void setDetected(boolean isDetected) {
+		this.isDetected = isDetected;
 	}
 
 }
