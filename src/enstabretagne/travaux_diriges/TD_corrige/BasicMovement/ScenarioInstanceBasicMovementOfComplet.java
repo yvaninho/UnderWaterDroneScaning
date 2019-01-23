@@ -26,7 +26,7 @@ import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Ocean.En
 import javafx.geometry.Point3D;
 import javafx.scene.paint.Color;
 
-public class ScenarioInstanceBasicMovementOfSysteme implements IScenarioInstance {
+public class ScenarioInstanceBasicMovementOfComplet implements IScenarioInstance {
 
 	@Override
 	public IScenario getScenarioInstance() {

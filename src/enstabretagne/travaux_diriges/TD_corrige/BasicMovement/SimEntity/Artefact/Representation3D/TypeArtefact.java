@@ -4,6 +4,4 @@ public enum TypeArtefact {
 	SPHERE,
 	BOX,
 	CYLINDER,
-
-
 }
