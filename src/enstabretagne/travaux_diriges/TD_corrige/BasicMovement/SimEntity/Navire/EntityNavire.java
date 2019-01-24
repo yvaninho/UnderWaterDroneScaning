@@ -3,7 +3,6 @@ package enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Navire;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import enstabretagne.base.logger.Logger;
 import enstabretagne.base.logger.ToRecord;
 import enstabretagne.base.time.LogicalDateTime;
@@ -23,7 +22,7 @@ import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Drone.En
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.MouvementSequenceur.EntityMouvementSequenceur;
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.MouvementSequenceur.EntityMouvementSequenceurFeature;
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.MouvementSequenceur.EntityMouvementSequenceurInit;
-import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.MouvementSequenceur.EntityMouvementSequenceur_Exemple1;
+import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.MouvementSequenceur.EntityMouvementSequenceurDrone;
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Navire.Representation3D.EntityNavire3DRepresentationInterface;
 import javafx.geometry.Point3D;
 import javafx.scene.paint.Color;
@@ -35,13 +34,13 @@ public class EntityNavire extends SimEntity implements IMovable, EntityNavire3DR
 	private EntityNavireInit NavireInit;
 	private EntityNavireFeature NavireFeature;
 	private List<EntityDrone> drones;
-	private int nbDroneseMax  ;
+	private int nbDroneseMax;
 
 	public EntityNavire(String name, SimFeatures features) {
 		super(name, features);
 		NavireFeature = (EntityNavireFeature) features;
 		drones = new ArrayList<EntityDrone>();
-		nbDroneseMax = 5 ;
+		nbDroneseMax = 5;
 	}
 
 	@Override
@@ -53,8 +52,8 @@ public class EntityNavire extends SimEntity implements IMovable, EntityNavire3DR
 	protected void initializeSimEntity(SimInitParameters init) {
 		NavireInit = (EntityNavireInit) getInitParameters();
 
-		rmv = (EntityMouvementSequenceur) createChild(EntityMouvementSequenceur.class,
-				"monSequenceur", ((EntityNavireFeature) getFeatures()).getSeqFeature());
+		rmv = (EntityMouvementSequenceur) createChild(EntityMouvementSequenceur.class, "monSequenceur",
+				((EntityNavireFeature) getFeatures()).getSeqFeature());
 		rmv.initialize(NavireInit.getMvtSeqInitial());
 
 	}
@@ -69,6 +68,7 @@ public class EntityNavire extends SimEntity implements IMovable, EntityNavire3DR
 		Logger.Detail(this, "AfterActivate", "Activation de Navire");
 		rmv.activate();
 		Post(new DroneLunch(), getCurrentLogicalDate().add(LogicalDuration.ofSeconds(1)));
+
 	}
 
 	@ToRecord(name = "Position")
@@ -109,6 +109,12 @@ public class EntityNavire extends SimEntity implements IMovable, EntityNavire3DR
 
 	@Override
 	protected void BeforeDeactivating(IEntity sender, boolean starting) {
+		Logger.Information(this, "BeforeDeactivate", "Sur le point de se désactiver");
+		for (EntityDrone drone : drones) {
+			drone.deactivate();
+			drone.terminate(starting);
+		}
+
 		rmv.deactivate();
 	}
 
@@ -146,25 +152,24 @@ public class EntityNavire extends SimEntity implements IMovable, EntityNavire3DR
 			// TODO Auto-generated method stub
 
 			Logger.Detail(this, "DroneLunch.Process", "Création du sous marin");
-			int zPlongee = -10;
+			int zPlongee = 0;
 			// Création du drone et des points de passage
 			HashMap<String, Point3D> positionsCles = new HashMap<String, Point3D>();
 			positionsCles.put("start", getPosition());
 			positionsCles.put("plongee", new Point3D(getPosition().getX(), getPosition().getY(), zPlongee));
-			Point3D A = new Point3D( getPosition().getX(),getPosition().getY(), zPlongee);
-			int rayon = 300 ;
-			int xb = (int) (getPosition().getX()+ (rayon*Math.cos(0.2+2*Math.PI*(drones.size()*1.0 / nbDroneseMax ) ))) ;
-			int yb =   (int) (getPosition().getY()+(rayon*Math.sin(0.2+2*Math.PI*(drones.size()*1.0 / nbDroneseMax ) ))) ;			
+			Point3D A = new Point3D(getPosition().getX(), getPosition().getY(), zPlongee);
+			int rayon = 10000;
+			int xb = (int) (getPosition().getX()
+					+ (rayon * Math.cos(0.2 + 2 * Math.PI * (drones.size() / (double) nbDroneseMax))));
+			int yb = (int) (getPosition().getY()
+					+ (rayon * Math.sin(0.2 + 2 * Math.PI * (drones.size() / (double) nbDroneseMax))));
 			Point3D B = new Point3D(xb, yb, zPlongee);
-			Logger.Detail(this, "DroneLunch.Process", "Création du sous marin au point "+(drones.size() / nbDroneseMax )+" "+B);			
+			Logger.Detail(this, "DroneLunch.Process",
+					"Création du sous marin au point " + (drones.size() / nbDroneseMax) + " " + B);
 
 			positionsCles.put("A", A);
 			positionsCles.put("B", B);
-			int nbPoints = 12;
-			String pointName = "";
-			int x;
-			int y;
-			int k = 1;
+			int nbPoints = 10;
 
 			MovableState mst;
 			EntityMouvementSequenceurInit msi;
@@ -173,18 +178,18 @@ public class EntityNavire extends SimEntity implements IMovable, EntityNavire3DR
 					new Point3D(0, 0, 0.0), Point3D.ZERO);
 			msi = new EntityMouvementSequenceurInit("MSI", mst, 10, 100, 2, 8, positionsCles, nbPoints);
 			feat = new EntityMouvementSequenceurFeature("MSF");
-			EntityDroneInit i = new EntityDroneInit("Drone Observation "+drones.size()+1, msi, positionsCles, nbPoints);
+			EntityDroneInit i = new EntityDroneInit("Drone Observation " + (drones.size() + 1), msi, positionsCles,
+					nbPoints);
 			EntityDroneFeature f = new EntityDroneFeature("Drone", 10, 10, Color.BLACK, feat);
 			SimEntity b = createChild(EntityDrone.class, i.getName(), f);
 			b.initialize(i);
 			b.activate();
 			drones.add((EntityDrone) b);
-			
-			if(drones.size() < nbDroneseMax) {
-				
-				Post(new DroneLunch(), getCurrentLogicalDate().add(LogicalDuration.ofSeconds(10)));
-			}
 
+			if (drones.size() < nbDroneseMax) {
+
+				Post(new DroneLunch(), getCurrentLogicalDate().add(LogicalDuration.ofSeconds(600)));
+			}
 
 		}
 

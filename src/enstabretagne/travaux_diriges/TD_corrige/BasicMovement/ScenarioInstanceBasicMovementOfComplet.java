@@ -68,6 +68,7 @@ public class ScenarioInstanceBasicMovementOfComplet implements IScenarioInstance
 		bsf.getNavires().put(new EntityNavireFeature("NavireF",5,3,Color.BROWN,feat), new EntityNavireInit("Navire Observation 2", msi));
 
 		//Création de artefact
+		
 		int i=0;
 		
 	    int seed = 42;
@@ -116,11 +117,10 @@ public class ScenarioInstanceBasicMovementOfComplet implements IScenarioInstance
 			int Y = (int)(generateur.nextUniform(-Yocean, Yocean));
 			int Z = (int)(generateur.nextUniform(Zocean, Zmax));		
 			mssArtefact = new EntityMouvementSequenceurFeature("B"+i);
-			mstArtefact = new MovableState(new Point3D(X,Y,-Z), Point3D.ZERO, Point3D.ZERO, Point3D.ZERO, Point3D.ZERO, Point3D.ZERO);
+			mstArtefact = new MovableState(new Point3D(X,Y,Z), Point3D.ZERO, Point3D.ZERO, Point3D.ZERO, Point3D.ZERO, Point3D.ZERO);
 			msiArtefact= new EntityMouvementSequenceurInit("MSI", mstArtefact, 0, 0,0,0, positionsCles,0);
 			bsf.getArtefactes().put(new EntityArtefactFeature("B1",5,1,Color.RED,mssArtefact,Sphere ), new EntityArtefactInit("B"+i,msiArtefact));
-			
-			
+	
 		}
 		
 	////création des cubes
@@ -134,7 +134,7 @@ public class ScenarioInstanceBasicMovementOfComplet implements IScenarioInstance
 			int Y = (int)(generateur.nextUniform(-Yocean, Yocean));
 			int Z = (int)(generateur.nextUniform(Zocean, Zmax));
 			mssArtefact = new EntityMouvementSequenceurFeature("Cu"+i);
-			mstArtefact = new MovableState(new Point3D(X,Y,-Z), Point3D.ZERO, Point3D.ZERO, Point3D.ZERO, Point3D.ZERO, Point3D.ZERO);
+			mstArtefact = new MovableState(new Point3D(X,Y,Z), Point3D.ZERO, Point3D.ZERO, Point3D.ZERO, Point3D.ZERO, Point3D.ZERO);
 			msiArtefact= new EntityMouvementSequenceurInit("MSI", mstArtefact, 0, 0,0,0, positionsCles,0);
 			bsf.getArtefactes().put(new EntityArtefactFeature("Cu1",5,1,Color.YELLOW,mssArtefact,Cube ), new EntityArtefactInit("Cu"+i,msiArtefact));	
 		}
@@ -171,9 +171,9 @@ public class ScenarioInstanceBasicMovementOfComplet implements IScenarioInstance
 			int Y = (int)(generateur.nextUniform(-Yocean, Yocean));
 			int Z = (int)(generateur.nextUniform(Zocean, Zmax));
 		
-			mssArtefact = new EntityMouvementSequenceurFeature("Objet"+i);
+			mssArtefact = new EntityMouvementSequenceurFeature("Objet");
 			
-			mstArtefact = new MovableState(new Point3D(X,Y,-Z), Point3D.ZERO, Point3D.ZERO, Point3D.ZERO, Point3D.ZERO, Point3D.ZERO);
+			mstArtefact = new MovableState(new Point3D(X,Y,Z), Point3D.ZERO, Point3D.ZERO, Point3D.ZERO, Point3D.ZERO, Point3D.ZERO);
 			msiArtefact= new EntityMouvementSequenceurInit("MSI", mstArtefact, 0, 0,0,0, null,0);
 			bsf.getArtefactes().put(new EntityArtefactFeature("Objet1",5,1,Color.BLACK,mssArtefact,Cube ), new EntityArtefactInit("Objet"+i,msiArtefact));
 			
@@ -181,19 +181,6 @@ public class ScenarioInstanceBasicMovementOfComplet implements IScenarioInstance
 		}
 		
 
-		/* int N = 10;
-		positionsCles = new HashMap<String, Point3D>();
-		for (i = 0; i < N; i++) {
-			MovableState mstBouee;
-			EntityMouvementSequenceurInit msiBouee;
-
-			mstBouee = new MovableState(new Point3D(10 * i, 0, 0), Point3D.ZERO, Point3D.ZERO, Point3D.ZERO,
-					Point3D.ZERO, Point3D.ZERO);
-			msiBouee = new EntityMouvementSequenceurInit("MSI", mstBouee, 0, 0, 0, 0, positionsCles);
-			bsf.getBouees().put(new BoueeFeatures("B1", 5, 1, 3.0), new BoueeInit("B" + i, msiBouee, Color.RED));
-
-		}
-		*/
 		
 		//Création de l'ocean
 		positionsCles = new HashMap<String, Point3D>();
@@ -201,7 +188,7 @@ public class ScenarioInstanceBasicMovementOfComplet implements IScenarioInstance
 		EntityMouvementSequenceurInit msiOcean = new EntityMouvementSequenceurInit("MSIOCEAN", mstOcean, 0, 0,0,0, positionsCles, 0);
 		bsf.getOcean().put(new EntityOceanFeature("O1"), new EntityOceanInit("Atlantique", msiOcean));
 		LogicalDateTime start = new LogicalDateTime("05/12/2017 06:00");
-		LogicalDateTime end = start.add(LogicalDuration.ofMinutes(2));
+		LogicalDateTime end = start.add(LogicalDuration.ofHours(3));
 		BasicMvtScenario bms = new BasicMvtScenario(new ScenarioId("S2"), bsf, start, end);
 		return bms;
 	}

@@ -136,7 +136,7 @@ public class ScenarioInstanceBasicMovement3 implements IScenarioInstance {
 		bsf.getOcean().put(new EntityOceanFeature("O1"), new EntityOceanInit("Atlantique", msiOcean));
 
 		LogicalDateTime start = new LogicalDateTime("05/12/2017 06:00");
-		LogicalDateTime end = start.add(LogicalDuration.ofMinutes(2));
+		LogicalDateTime end = start.add(LogicalDuration.ofMinutes(40));
 		BasicMvtScenario bms = new BasicMvtScenario(new ScenarioId("S3"), bsf, start, end);
 
 		return bms;

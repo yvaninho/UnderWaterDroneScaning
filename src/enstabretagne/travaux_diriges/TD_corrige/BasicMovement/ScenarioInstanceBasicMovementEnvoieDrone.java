@@ -54,24 +54,14 @@ public class ScenarioInstanceBasicMovementEnvoieDrone implements IScenarioInstan
 		EntityMouvementSequenceurInit msi;
 		EntityMouvementSequenceurFeature feat;
 
-		// Drone
-		/*
-		mst = new MovableState(new Point3D(-50, 30, 0), new Point3D(0, 0, 0), Point3D.ZERO, new Point3D(-100, 0, 0.0),
-				new Point3D(0, 0, 0.0), Point3D.ZERO);
-		msi = new EntityMouvementSequenceurInit("MSI", mst, 10, 100, 2, 8, positionsCles, nbPoints);
-		feat = new EntityMouvementSequenceurFeature("MSF");
-		bsf.getDrones().put(new EntityDroneFeature("Drone", 5, 3, Color.BLACK, feat),
-				new EntityDroneInit("Drone Observation 1", msi, positionsCles, nbPoints));
-		
-		*/
-		// Création du Drone 
+		// Création du Navire 
 		feat = new EntityMouvementSequenceurFeature("MSF");
 		positionsCles = new HashMap<String, Point3D>();
 		MovableState mstOcean = new MovableState(new Point3D(40,40,0), Point3D.ZERO, Point3D.ZERO, Point3D.ZERO, Point3D.ZERO,
 				Point3D.ZERO);
 		EntityMouvementSequenceurInit msiOcean = new EntityMouvementSequenceurInit("MSIOCEAN", mstOcean, 0, 0, 0, 0,
 				null, 0);
-		bsf.getNavires().put(new EntityNavireFeature("O1", 50, 50, Color.RED, feat), new EntityNavireInit("Atlantique", msiOcean));
+		bsf.getNavires().put(new EntityNavireFeature("O1", 50, 50, Color.RED, feat), new EntityNavireInit("Navire ", msiOcean));
 		
 		
 		// Création de l'océan
