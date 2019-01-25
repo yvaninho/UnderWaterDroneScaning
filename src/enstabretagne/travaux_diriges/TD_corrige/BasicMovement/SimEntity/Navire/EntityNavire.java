@@ -22,6 +22,7 @@ import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Drone.En
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.MouvementSequenceur.EntityMouvementSequenceur;
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.MouvementSequenceur.EntityMouvementSequenceurFeature;
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.MouvementSequenceur.EntityMouvementSequenceurInit;
+import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.MouvementSequenceur.EntityMouvementSequenceur_ExempleSauvegarde2.ScanOcean;
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.MouvementSequenceur.EntityMouvementSequenceurDrone;
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Navire.Representation3D.EntityNavire3DRepresentationInterface;
 import javafx.geometry.Point3D;
@@ -170,7 +171,6 @@ public class EntityNavire extends SimEntity implements IMovable, EntityNavire3DR
 			positionsCles.put("A", A);
 			positionsCles.put("B", B);
 			int nbPoints = 10;
-
 			MovableState mst;
 			EntityMouvementSequenceurInit msi;
 			EntityMouvementSequenceurFeature feat;
@@ -188,10 +188,23 @@ public class EntityNavire extends SimEntity implements IMovable, EntityNavire3DR
 
 			if (drones.size() < nbDroneseMax) {
 
-				Post(new DroneLunch(), getCurrentLogicalDate().add(LogicalDuration.ofSeconds(600)));
+				Post(new DroneLunch(), getCurrentLogicalDate().add(LogicalDuration.ofSeconds(10)));
 			}
 
 		}
 
 	}
+	
+	public class ReceiveInfos extends SimEvent {
+
+		@Override
+		public void Process() {
+			// TODO Auto-generated method stub
+			
+			
+		}
+	
+		
+	}
+	
 }

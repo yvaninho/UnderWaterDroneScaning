@@ -21,6 +21,7 @@ public class EntityDrone extends SimEntity implements IMovable, EntityDrone3DRep
 	private EntityDroneInit Dronenit;
 	private EntityDroneFeature droneFeature;
 	private EntityNavire navire;
+	private boolean missionComple  ;
 
 	public EntityDrone(String name, SimFeatures features) {
 		super(name, features);

@@ -32,7 +32,7 @@ public class EntityOcean3DRepresentation extends Representation3D {
 		double epaisseurs = 300000;
 		Group g = new Group();
 
-		double alpha0 = 0.1;
+		double alpha0 = 0.1 ;
 		double max = size / epaisseurs;
 		int i = 0;
 		for (i = 0; i < max; i++) {

@@ -25,7 +25,6 @@ import javafx.geometry.Point3D;
 public class EntityMouvementSequenceurDrone extends EntityMouvementSequenceur implements IMover {
 
 	// Variable Pour savoir si la mission est terminée
-
 	protected boolean missionCompleted = false;
 	protected HashMap<String, Point3D> pointsClefs;
 	// variable pour savoir si le sous-marin est entrain de se diriger vers un
@@ -50,7 +49,7 @@ public class EntityMouvementSequenceurDrone extends EntityMouvementSequenceur im
 	// vitesse de remontée en surface à une vitesse de 2m/s
 	private int vitesseMontee = 2;
 	// vitesse du drone sous l'eau
-	private int vitesseSousleau = 3;
+	private int vitesseSousleau = 3 ;
 
 	public EntityMouvementSequenceurDrone(String name, SimFeatures features) {
 		super(name, features);
@@ -325,7 +324,7 @@ public class EntityMouvementSequenceurDrone extends EntityMouvementSequenceur im
 			if (target != null) {
 
 				if (target.getName().equals("Objet0")) {
-					Logger.Information(Owner(), "Classify Target ", " Object found");
+					Logger.Information(Owner(), "Classify Target ", " Object found "+getPosition(d));
 
 				}
 				target.setDetected(true);
@@ -378,6 +377,23 @@ public class EntityMouvementSequenceurDrone extends EntityMouvementSequenceur im
 			mv = staticMover;
 		}
 
+	}
+	
+	public class SendObjectFound extends SimEvent{
+
+		@Override
+		public void Process() {
+			// TODO Auto-generated method stub
+			
+		}
+	}
+		public class RecieveObjectFound extends SimEvent{
+
+			@Override
+			public void Process() {
+				// TODO Auto-generated method stub
+				missionCompleted =true ;
+			}		
 	}
 
 }
