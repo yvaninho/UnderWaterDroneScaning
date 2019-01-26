@@ -186,21 +186,23 @@ public class EntityMouvementSequenceurDrone extends EntityMouvementSequenceur im
 			EntityArtefact monArtefact;
 
 			if (objectsNear.size() > 0 && target == null) {
-				/*
-				 * for (ISimObject object : objectsNear) {
-				 * 
-				 * monArtefact = (EntityArtefact) object; magnitudeCourante = (int)
-				 * monArtefact.getPosition().subtract(getPosition(d)).magnitude();
-				 * 
-				 * if (magnitudeCourante < magnitudeMin) {
-				 * 
-				 * magnitudeMin = magnitudeCourante; target = monArtefact;
-				 * 
-				 * }
-				 * 
-				 * }
-				 */
-				target = (EntityArtefact) objectsNear.get(0);
+				
+				  for (ISimObject object : objectsNear) {
+				  
+				  monArtefact = (EntityArtefact) object; magnitudeCourante = (int)
+				  monArtefact.getPosition().subtract(getPosition(d)).magnitude();
+				  
+				  if (magnitudeCourante < magnitudeMin) {
+				  
+				  magnitudeMin = magnitudeCourante; target = monArtefact;
+				 
+				  }
+				  
+				  System.out.println("Position "+monArtefact.getPosition());
+				  
+				  }
+				 
+
 				target.setTracked(true);
 				objectsNear.remove(target);
 				Post(new Plongee(), LogicalDuration.ofSeconds(1));

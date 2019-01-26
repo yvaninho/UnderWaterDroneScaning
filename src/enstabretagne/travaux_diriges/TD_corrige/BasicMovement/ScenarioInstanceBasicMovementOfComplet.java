@@ -137,6 +137,8 @@ public class ScenarioInstanceBasicMovementOfComplet implements IScenarioInstance
 			mstArtefact = new MovableState(new Point3D(X,Y,Z), Point3D.ZERO, Point3D.ZERO, Point3D.ZERO, Point3D.ZERO, Point3D.ZERO);
 			msiArtefact= new EntityMouvementSequenceurInit("MSI", mstArtefact, 0, 0,0,0, positionsCles,0);
 			bsf.getArtefactes().put(new EntityArtefactFeature("Cu1",5,1,Color.YELLOW,mssArtefact,Cube ), new EntityArtefactInit("Cu"+i,msiArtefact));	
+		
+
 		}
 		
 		///création des Cylindres 
