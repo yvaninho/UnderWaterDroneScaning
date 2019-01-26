@@ -8,6 +8,7 @@ import enstabretagne.simulation.components.data.SimFeatures;
 import enstabretagne.simulation.components.data.SimInitParameters;
 import enstabretagne.simulation.components.implementation.SimEntity;
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Artefact.Representation3D.EntityArtefact3DRepresentationInterface;
+import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Artefact.Representation3D.TypeArtefact;
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.MouvementSequenceur.EntityMouvementSequenceur;
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.MouvementSequenceur.EntityMouvementSequenceur_Exemple;
 import javafx.geometry.Point3D;
@@ -19,6 +20,23 @@ public class EntityArtefact extends SimEntity implements IMovable, EntityArtefac
 	private EntityMouvementSequenceur rmv;
 	private EntityArtefactInit artefactInit;
 	private EntityArtefactFeature aretefactFeatures;
+	private boolean isDetected = false ;
+	private boolean isTracked  = false ; //cette variable permet de savoir si un artefact est déjà traqué afin d'éviter que deux drones se dirige vers 1
+	public boolean isTracked() {
+		return isTracked;
+	}
+
+	public void setTracked(boolean isTracked) {
+		this.isTracked = isTracked;
+	}
+
+	public boolean isDetected() {
+		return isDetected;
+	}
+
+	public void setDetected(boolean isDetected) {
+		this.isDetected = isDetected;
+	}
 
 	public EntityArtefact(String name, SimFeatures features) {
 		super(name, features);
@@ -34,7 +52,7 @@ public class EntityArtefact extends SimEntity implements IMovable, EntityArtefac
 	protected void initializeSimEntity(SimInitParameters init) {
 		artefactInit = (EntityArtefactInit) getInitParameters();
 
-		rmv = (EntityMouvementSequenceur_Exemple) createChild(EntityMouvementSequenceur_Exemple.class, "monSequenceur",
+		rmv = (EntityMouvementSequenceur) createChild(EntityMouvementSequenceur.class, "monSequenceur",
 				((EntityArtefactFeature) getFeatures()).getSeqFeature());
 		rmv.initialize(artefactInit.getMvtSeqInitial());
 
@@ -118,6 +136,20 @@ public class EntityArtefact extends SimEntity implements IMovable, EntityArtefac
 	public double getLongueur() {
 		return aretefactFeatures.getTaille();
 	}
+
+	@Override
+	public TypeArtefact getType() {
+		// TODO Auto-generated method stub
+		return aretefactFeatures.getTypeArtefact() ;
+	}
+	
+	
+	/*@Override
+	public TypeArtefact getType() {
+		// TODO Auto-generated method stub
+		return aretefactFeatures.getTypeArtefact();
+		
+	}*/
 
 
 }

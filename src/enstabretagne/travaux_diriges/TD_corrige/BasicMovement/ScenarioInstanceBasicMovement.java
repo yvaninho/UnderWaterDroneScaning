@@ -39,13 +39,13 @@ public class ScenarioInstanceBasicMovement implements IScenarioInstance {
 
 		MovableState mst = new MovableState(new Point3D(0, 0, 0), new Point3D(1, 1, 0), Point3D.ZERO,
 				new Point3D(0, 0, 45.0), new Point3D(10, 5, 0.0), Point3D.ZERO);
-		EntityMouvementSequenceurInit msi = new EntityMouvementSequenceurInit("MSI", mst, 10, 100, 2, 8, positionsCles);
+		EntityMouvementSequenceurInit msi = new EntityMouvementSequenceurInit("MSI", mst, 10, 100, 2, 8, positionsCles, 0);
 		EntityMouvementSequenceurFeature feat = new EntityMouvementSequenceurFeature("MSF");
 
 		bsf.getNavires().put(new EntityNavireFeature("NavireF", 5, 3, Color.BLACK, feat),
 				new EntityNavireInit("Navire Observation", msi));
-
 		// Création de bouees
+
 		int i = 0;
 		int N = 10;
 		positionsCles = new HashMap<String, Point3D>();
@@ -55,7 +55,7 @@ public class ScenarioInstanceBasicMovement implements IScenarioInstance {
 
 			mstBouee = new MovableState(new Point3D(10 * i, 0, 0), Point3D.ZERO, Point3D.ZERO, Point3D.ZERO,
 					Point3D.ZERO, Point3D.ZERO);
-			msiBouee = new EntityMouvementSequenceurInit("MSI", mstBouee, 0, 0, 0, 0, positionsCles);
+			msiBouee = new EntityMouvementSequenceurInit("MSI", mstBouee, 0, 0, 0, 0,null,0) ;
 			bsf.getBouees().put(new BoueeFeatures("B1", 5, 1, 3.0), new BoueeInit("B" + i, msiBouee, Color.RED));
 
 		}
@@ -65,7 +65,7 @@ public class ScenarioInstanceBasicMovement implements IScenarioInstance {
 		MovableState mstOcean = new MovableState(Point3D.ZERO, Point3D.ZERO, Point3D.ZERO, Point3D.ZERO, Point3D.ZERO,
 				Point3D.ZERO);
 		EntityMouvementSequenceurInit msiOcean = new EntityMouvementSequenceurInit("MSIOCEAN", mstOcean, 0, 0, 0, 0,
-				positionsCles);
+				positionsCles, 0);
 		bsf.getOcean().put(new EntityOceanFeature("O1"), new EntityOceanInit("Atlantique", msiOcean));
 
 		LogicalDateTime start = new LogicalDateTime("05/12/2017 06:00");

@@ -15,6 +15,7 @@ public class EntityMouvementSequenceurInit extends SimInitParameters {
 	private double maxUnderWaterSpeed;
 	private double maxSelfRotationSpeed;
 	private HashMap<String, Point3D> positionsCles;
+	private int nbPoints ;
 	
 	public double getMaxPlongeeSpeed() {
 		return maxPlongeeSpeed;
@@ -29,7 +30,7 @@ public class EntityMouvementSequenceurInit extends SimInitParameters {
 											double maxSelfRotationSpeed,
 											double maxPlongeeSpeed,
 											double maxUnderWaterSpeed,
-											HashMap<String, Point3D> positionsCles)
+											HashMap<String, Point3D> positionsCles, int nbPoints)
 	{
 		this.etatInitial = etatInitial;
 		this.name = nom;
@@ -38,6 +39,7 @@ public class EntityMouvementSequenceurInit extends SimInitParameters {
 		this.maxUnderWaterSpeed=maxUnderWaterSpeed;
 		this.maxSelfRotationSpeed= maxSelfRotationSpeed;
 		this.positionsCles = positionsCles;
+		this.nbPoints = nbPoints ;
 	}
 	
 	public double getMaxLinearSpeed() {

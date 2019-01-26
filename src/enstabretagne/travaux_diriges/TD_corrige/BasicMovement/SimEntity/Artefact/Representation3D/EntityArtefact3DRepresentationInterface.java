@@ -7,5 +7,5 @@ public interface EntityArtefact3DRepresentationInterface extends IMovable{
 	Color getColor();
 	double getRayon();
 	double getLongueur();
-
+    TypeArtefact getType();
 }
