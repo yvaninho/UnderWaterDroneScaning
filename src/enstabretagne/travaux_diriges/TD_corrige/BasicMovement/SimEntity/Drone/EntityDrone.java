@@ -39,6 +39,8 @@ public class EntityDrone extends SimEntity implements IMovable, EntityDrone3DRep
 
 		rmv = (EntityMouvementSequenceurDrone) createChild(EntityMouvementSequenceurDrone.class,
 				"monSequenceur", ((EntityDroneFeature) getFeatures()).getSeqFeature());
+		
+		rmv.setPointsClefs(Dronenit.getPointsCles(), Dronenit.getNbPoints());
 		rmv.initialize(Dronenit.getMvtSeqInitial());
 
 	}

@@ -8,9 +8,7 @@ public class MainApp {
 
 	public static void main(String[] args) {
 
-		boolean AFAP = true ;
-
-
+		boolean AFAP = false;
 
 		if (AFAP) {
 			UniversalMonitor um = new UniversalMonitor();
@@ -19,7 +17,6 @@ public class MainApp {
 			um.exit();
 		} else
 			FX3DMonitor2.launch(FX3DMonitor2.class, args);
-		;
 
 	}
 

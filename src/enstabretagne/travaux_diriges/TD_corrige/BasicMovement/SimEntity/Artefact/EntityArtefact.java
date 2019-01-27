@@ -1,6 +1,7 @@
 package enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Artefact;
 
 import enstabretagne.base.logger.Logger;
+
 import enstabretagne.base.logger.ToRecord;
 import enstabretagne.monitor.interfaces.IMovable;
 import enstabretagne.simulation.components.IEntity;
@@ -10,7 +11,6 @@ import enstabretagne.simulation.components.implementation.SimEntity;
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Artefact.Representation3D.EntityArtefact3DRepresentationInterface;
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Artefact.Representation3D.TypeArtefact;
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.MouvementSequenceur.EntityMouvementSequenceur;
-import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.MouvementSequenceur.EntityMouvementSequenceur_Exemple;
 import javafx.geometry.Point3D;
 import javafx.scene.paint.Color;
 

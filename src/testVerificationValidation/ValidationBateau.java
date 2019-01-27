@@ -11,7 +11,7 @@ public class ValidationBateau {
 		System.out.println("Working Directory = " + System.getProperty("user.dir"));
 
 		Fillo fillo = new Fillo();
-		Connection connection = fillo.getConnection("log\\1548548316685BasicMovement.xlsx");
+		Connection connection = fillo.getConnection("log\\1548595385741BasicMovement.xlsx");
 		System.out.println("Fichier Chargé");
 		// String strQuery="Select * from Logs where ID=100 and name='John'";
 		String strQuery = "Select * from Logs Message like '%'";
