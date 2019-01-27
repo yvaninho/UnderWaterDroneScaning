@@ -8,7 +8,9 @@ public class MainApp {
 
 	public static void main(String[] args) {
 
-		boolean AFAP = true  ;
+		boolean AFAP = true ;
+
+
 
 		if (AFAP) {
 			UniversalMonitor um = new UniversalMonitor();
