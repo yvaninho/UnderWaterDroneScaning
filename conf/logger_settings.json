@@ -8,7 +8,7 @@
     "loggerConfs": [
         {
             "parametres": {
-                "FileName": "BasicMovement.xlsx",
+                "FileName": "UnderWaterDetection.xlsx",
                 "LoggerKind": "enstabretagne.base.logger.loggerimpl.Excel.ExcelDataLogger",
                 "DirectoryName": ".\\log"
             }
