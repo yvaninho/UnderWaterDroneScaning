@@ -406,19 +406,10 @@ public class EntityMouvementSequenceurDrone extends EntityMouvementSequenceur im
 			Logger.Information(Owner(), "Process Montee", "Montee");
 			LogicalDateTime d = getCurrentLogicalDate();
 			// On calcule les coordonnées du point de Montée 
-			Point3D pointSurface = new Point3D (mv.getPosition(d).getX(),mv.getPosition(d).getY(), 0)  ;
-						
+			Point3D pointSurface = new Point3D (mv.getPosition(d).getX(),mv.getPosition(d).getY(), 0)  ;				
 			rectilinearMover = new RectilinearMover(d, mv.getPosition(d), pointSurface,vitesseMontee);
 			mv = rectilinearMover;
-			missionCompleted = true;
-			
-			 if(missionCompleted) {
-				 Post(new Arret(), mv.getDurationToReach());
-				 }
-			 else {
-				 Post(new ComeBack(), mv.getDurationToReach());
-			 }
-				 
+            Post(new ComeBack(), mv.getDurationToReach());	 
 		}
 	}
 	public class Arret extends SimEvent {
