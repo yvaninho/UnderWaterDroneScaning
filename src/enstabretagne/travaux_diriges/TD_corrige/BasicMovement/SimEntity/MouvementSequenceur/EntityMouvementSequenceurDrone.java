@@ -1,23 +1,19 @@
 package enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.MouvementSequenceur;
 
-import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.Phaser;
+
 import enstabretagne.base.logger.Logger;
 import enstabretagne.base.logger.ToRecord;
 import enstabretagne.base.time.LogicalDateTime;
 import enstabretagne.base.time.LogicalDuration;
-import enstabretagne.monitor.implementation.XYZRotator;
 import enstabretagne.simulation.components.IEntity;
 import enstabretagne.simulation.components.data.SimFeatures;
 import enstabretagne.simulation.components.data.SimInitParameters;
 import enstabretagne.simulation.core.ISimObject;
 import enstabretagne.simulation.core.implementation.SimEvent;
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Artefact.EntityArtefact;
-import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Bouee.Bouee;
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Bouee.IMover;
 import javafx.geometry.Point3D;
 
@@ -49,7 +45,7 @@ public class EntityMouvementSequenceurDrone extends EntityMouvementSequenceur im
 	// vitesse de remontée en surface à une vitesse de 2m/s
 	private int vitesseMontee = 2;
 	// vitesse du drone sous l'eau
-	private int vitesseSousleau = 3 ;
+	private int vitesseSousleau = 3;
 
 	public EntityMouvementSequenceurDrone(String name, SimFeatures features) {
 		super(name, features);
@@ -186,22 +182,22 @@ public class EntityMouvementSequenceurDrone extends EntityMouvementSequenceur im
 			EntityArtefact monArtefact;
 
 			if (objectsNear.size() > 0 && target == null) {
-				
-				  for (ISimObject object : objectsNear) {
-				  
-				  monArtefact = (EntityArtefact) object; magnitudeCourante = (int)
-				  monArtefact.getPosition().subtract(getPosition(d)).magnitude();
-				  
-				  if (magnitudeCourante < magnitudeMin) {
-				  
-				  magnitudeMin = magnitudeCourante; target = monArtefact;
-				 
-				  }
-				  
-				  System.out.println("Position "+monArtefact.getPosition());
-				  
-				  }
-				 
+
+				for (ISimObject object : objectsNear) {
+
+					monArtefact = (EntityArtefact) object;
+					magnitudeCourante = (int) monArtefact.getPosition().subtract(getPosition(d)).magnitude();
+
+					if (magnitudeCourante < magnitudeMin) {
+
+						magnitudeMin = magnitudeCourante;
+						target = monArtefact;
+
+					}
+
+					System.out.println("Position " + monArtefact.getPosition());
+
+				}
 
 				target.setTracked(true);
 				objectsNear.remove(target);
@@ -210,7 +206,7 @@ public class EntityMouvementSequenceurDrone extends EntityMouvementSequenceur im
 			}
 
 			// if (!missionCompleted)
-			 Post(new ScanOcean(), d.add(LogicalDuration.ofMinutes(1)));
+			Post(new ScanOcean(), d.add(LogicalDuration.ofMinutes(1)));
 
 		}
 
@@ -326,7 +322,7 @@ public class EntityMouvementSequenceurDrone extends EntityMouvementSequenceur im
 			if (target != null) {
 
 				if (target.getName().equals("Objet0")) {
-					Logger.Information(Owner(), "Classify Target ", " Object found "+getPosition(d));
+					Logger.Information(Owner(), "Classify Target ", " Object found " + getPosition(d));
 
 				}
 				target.setDetected(true);
@@ -380,22 +376,23 @@ public class EntityMouvementSequenceurDrone extends EntityMouvementSequenceur im
 		}
 
 	}
-	
-	public class SendObjectFound extends SimEvent{
+
+	public class SendObjectFound extends SimEvent {
 
 		@Override
 		public void Process() {
 			// TODO Auto-generated method stub
-			
+
 		}
 	}
-		public class RecieveObjectFound extends SimEvent{
 
-			@Override
-			public void Process() {
-				// TODO Auto-generated method stub
-				missionCompleted =true ;
-			}		
+	public class RecieveObjectFound extends SimEvent {
+
+		@Override
+		public void Process() {
+			// TODO Auto-generated method stub
+			missionCompleted = true;
+		}
 	}
 
 }
