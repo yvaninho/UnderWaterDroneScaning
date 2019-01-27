@@ -1,6 +1,7 @@
 package enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Navire;
 
 import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.List;
 import enstabretagne.base.logger.Logger;
@@ -13,7 +14,9 @@ import enstabretagne.simulation.components.IEntity;
 import enstabretagne.simulation.components.data.SimFeatures;
 import enstabretagne.simulation.components.data.SimInitParameters;
 import enstabretagne.simulation.components.implementation.SimEntity;
+import enstabretagne.simulation.core.ISimObject;
 import enstabretagne.simulation.core.implementation.SimEvent;
+import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Artefact.EntityArtefact;
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Bouee.Bouee;
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Bouee.BoueeInit;
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Drone.EntityDrone;
@@ -27,6 +30,7 @@ import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Mouvemen
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Navire.Representation3D.EntityNavire3DRepresentationInterface;
 import javafx.geometry.Point3D;
 import javafx.scene.paint.Color;
+import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.MouvementSequenceur.EntityMouvementSequenceurDrone.MissionCompleted;
 
 @ToRecord(name = "Navire")
 public class EntityNavire extends SimEntity implements IMovable, EntityNavire3DRepresentationInterface {
@@ -35,6 +39,7 @@ public class EntityNavire extends SimEntity implements IMovable, EntityNavire3DR
 	private EntityNavireInit NavireInit;
 	private EntityNavireFeature NavireFeature;
 	private List<EntityDrone> drones;
+	private List<EntityArtefact> listDiscoveredArtefact;
 	private int nbDroneseMax;
 
 	public EntityNavire(String name, SimFeatures features) {
@@ -42,6 +47,7 @@ public class EntityNavire extends SimEntity implements IMovable, EntityNavire3DR
 		NavireFeature = (EntityNavireFeature) features;
 		drones = new ArrayList<EntityDrone>();
 		nbDroneseMax = 5;
+		listDiscoveredArtefact  = new ArrayList<EntityArtefact>();
 	}
 
 	@Override
@@ -194,17 +200,51 @@ public class EntityNavire extends SimEntity implements IMovable, EntityNavire3DR
 		}
 
 	}
-	
-	public class ReceiveInfos extends SimEvent {
+
+	public class ReceiveInfosArtefact extends SimEvent {
+
+		private EntityArtefact artefact;
+
+		public ReceiveInfosArtefact(EntityArtefact artefact_) {
+			// TODO Auto-generated constructor stub
+			this.artefact = artefact_;
+
+		}
 
 		@Override
 		public void Process() {
 			// TODO Auto-generated method stub
+
+			Logger.Information(Owner(), " Start ReceiveInfosArtefact ", " ReceiveInfosArtefact ");
+			listDiscoveredArtefact.add(artefact);
 			
-			
+			if (artefact.getName().equals("Objet0")) {
+
+				// On demande à tous les drones de revenir à la base.
+
+				List<ISimObject> objectsSeqDrones = getEngine().requestSimObject(this::isDroneSequenceur);
+				EntityMouvementSequenceurDrone droneSeq;
+				System.out.println(" taille "+objectsSeqDrones.size());
+				for (ISimObject objet : objectsSeqDrones) {
+
+					droneSeq = (EntityMouvementSequenceurDrone) objet;
+					droneSeq.Post(droneSeq.new MissionCompleted(), LogicalDuration.ofSeconds(1));
+
+				}
+
+			}
+
 		}
-	
-		
+
+		private boolean isDroneSequenceur(ISimObject o) {
+
+			if (o instanceof EntityMouvementSequenceurDrone) {
+
+				return true;
+
+			}
+			return false;
+		}
 	}
-	
+
 }

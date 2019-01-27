@@ -19,6 +19,8 @@ import enstabretagne.simulation.core.implementation.SimEvent;
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Artefact.EntityArtefact;
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Bouee.Bouee;
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Bouee.IMover;
+import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Navire.EntityNavire;
+import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Navire.EntityNavire.ReceiveInfosArtefact;
 import javafx.geometry.Point3D;
 
 @ToRecord(name = "MouvementSequenceur")
@@ -49,7 +51,7 @@ public class EntityMouvementSequenceurDrone extends EntityMouvementSequenceur im
 	// vitesse de remontée en surface à une vitesse de 2m/s
 	private int vitesseMontee = 2;
 	// vitesse du drone sous l'eau
-	private int vitesseSousleau = 3 ;
+	private int vitesseSousleau = 3;
 
 	public EntityMouvementSequenceurDrone(String name, SimFeatures features) {
 		super(name, features);
@@ -186,22 +188,20 @@ public class EntityMouvementSequenceurDrone extends EntityMouvementSequenceur im
 			EntityArtefact monArtefact;
 
 			if (objectsNear.size() > 0 && target == null) {
-				
-				  for (ISimObject object : objectsNear) {
-				  
-				  monArtefact = (EntityArtefact) object; magnitudeCourante = (int)
-				  monArtefact.getPosition().subtract(getPosition(d)).magnitude();
-				  
-				  if (magnitudeCourante < magnitudeMin) {
-				  
-				  magnitudeMin = magnitudeCourante; target = monArtefact;
-				 
-				  }
-				  
-				  System.out.println("Position "+monArtefact.getPosition());
-				  
-				  }
-				 
+
+				for (ISimObject object : objectsNear) {
+
+					monArtefact = (EntityArtefact) object;
+					magnitudeCourante = (int) monArtefact.getPosition().subtract(getPosition(d)).magnitude();
+
+					if (magnitudeCourante < magnitudeMin) {
+
+						magnitudeMin = magnitudeCourante;
+						target = monArtefact;
+
+					}
+
+				}
 
 				target.setTracked(true);
 				objectsNear.remove(target);
@@ -209,8 +209,8 @@ public class EntityMouvementSequenceurDrone extends EntityMouvementSequenceur im
 
 			}
 
-			// if (!missionCompleted)
-			 Post(new ScanOcean(), d.add(LogicalDuration.ofMinutes(1)));
+			if (!missionCompleted)
+				Post(new ScanOcean(), d.add(LogicalDuration.ofMinutes(1)));
 
 		}
 
@@ -320,22 +320,42 @@ public class EntityMouvementSequenceurDrone extends EntityMouvementSequenceur im
 		public void Process() {
 			// TODO Auto-generated method stub
 
-			Logger.Information(Owner(), "Classify Target ",
+			Logger.Information(Owner(), "Process ClassifyTarget ",
 					"Phase Classify Target " + target.getName() + " " + getParent().getName());
 			LogicalDateTime d = getCurrentLogicalDate();
 			if (target != null) {
 
 				if (target.getName().equals("Objet0")) {
-					Logger.Information(Owner(), "Classify Target ", " Object found "+getPosition(d));
+					Logger.Information(Owner(), "Classify Target ", " Object found " + getPosition(d));
+					missionCompleted = true;
 
 				}
 				target.setDetected(true);
+
+				List<ISimObject> objectsNavire = getEngine().requestSimObject(this::isNavire);
+				EntityNavire navire = (EntityNavire) objectsNavire.get(0);
+				navire.Post(navire.new ReceiveInfosArtefact(target), LogicalDuration.ofSeconds(1));
 				target = null;
 				isTrackingArtefact = false;
 				Post(new ComeBack(), d.add(LogicalDuration.ofSeconds(1)));
 			}
+
 		}
 
+		private boolean isNavire(ISimObject o) {
+
+			int portee = 5000;
+			if (o == this)
+				return false;
+
+			if (o instanceof EntityNavire) {
+
+				return true;
+			}
+
+			return false;
+
+		}
 	}
 
 	public class ComeBack extends SimEvent {
@@ -343,18 +363,16 @@ public class EntityMouvementSequenceurDrone extends EntityMouvementSequenceur im
 		@Override
 		public void Process() {
 			// TODO Auto-generated method stub
-
 			Logger.Information(Owner(), "Process turn come back  ", "start come back");
 			LogicalDateTime d = getCurrentLogicalDate();
 
+			if(! missionCompleted) {
 			rectilinearMover = new RectilinearMover(d, mv.getPosition(d), positionBeforeInterruption, 10);
 			mv = rectilinearMover;
 
 			Logger.Information(Owner(), "Come back ",
 					"Phase come back  " + mv.getDurationToReach() + positionBeforeInterruption);
-
 			// on termine le mouvement en cours d'éxécution
-
 			if (positionNumberBeforeInterruption % 2 == 0) {
 
 				Post(new FinLinearPhase(positionNumberBeforeInterruption), mv.getDurationToReach());
@@ -365,9 +383,44 @@ public class EntityMouvementSequenceurDrone extends EntityMouvementSequenceur im
 			}
 
 		}
+			
+		// au cas où la mission est terminée 
+	  else {
+			rectilinearMover = new RectilinearMover(d, mv.getPosition(d), ini.getPositionsCles().get("A"), 10);
+			mv = rectilinearMover;
+		  Post(new Arret(), mv.getDurationToReach());
+		  
+		}	
+	}
 
 	}
 
+	
+	public class Montee extends SimEvent {
+
+		@Override
+		public void Process() {
+			// TODO Auto-generated method stub
+			// retourner au bateau
+
+			Logger.Information(Owner(), "Process Montee", "Montee");
+			LogicalDateTime d = getCurrentLogicalDate();
+			// On calcule les coordonnées du point de Montée 
+			Point3D pointSurface = new Point3D (mv.getPosition(d).getX(),mv.getPosition(d).getY(), 0)  ;
+						
+			rectilinearMover = new RectilinearMover(d, mv.getPosition(d), pointSurface,vitesseMontee);
+			mv = rectilinearMover;
+			missionCompleted = true;
+			
+			 if(missionCompleted) {
+				 Post(new Arret(), mv.getDurationToReach());
+				 }
+			 else {
+				 Post(new ComeBack(), mv.getDurationToReach());
+			 }
+				 
+		}
+	}
 	public class Arret extends SimEvent {
 
 		@Override
@@ -380,22 +433,21 @@ public class EntityMouvementSequenceurDrone extends EntityMouvementSequenceur im
 		}
 
 	}
-	
-	public class SendObjectFound extends SimEvent{
+
+	// ordre envoyé par le bateau
+	public class MissionCompleted extends SimEvent {
 
 		@Override
 		public void Process() {
 			// TODO Auto-generated method stub
-			
+			// retourner au bateau
+			Logger.Information(Owner(), "Process MissionComplete", "MissionComplete");
+			LogicalDateTime d = getCurrentLogicalDate();
+			// On calcule les coordonnées du point de plongée
+			Post(new Montee(),LogicalDuration.ofSeconds(1));
 		}
 	}
-		public class RecieveObjectFound extends SimEvent{
-
-			@Override
-			public void Process() {
-				// TODO Auto-generated method stub
-				missionCompleted =true ;
-			}		
-	}
+	
+	
 
 }
