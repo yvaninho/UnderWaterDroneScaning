@@ -115,14 +115,14 @@ public class EntityMouvementSequenceurDrone extends EntityMouvementSequenceur im
 
 			if (!isTrackingArtefact && this.numPointCle < ini.getPositionsCles().size() - 4) {
 
-				// On sauvegarde le numéro du Point
+				// On sauvegarde le numero du Point
 				positionNumberBeforeInterruption = this.numPointCle;
-				Logger.Information(Owner(), "Process FinLinear", "Fin de la  phase Linéaire  N °" + this.numPointCle);
+				Logger.Information(Owner(), "Process FinLinear", "Fin de la  phase Lineaire  N �" + this.numPointCle);
 				LogicalDateTime d = getCurrentLogicalDate();
 				rectilinearMover = new RectilinearMover(d, mv.getPosition(d),
 						ini.getPositionsCles().get("PointCible" + numPointCle), ini.getMaxLinearSpeed());
 				mv = rectilinearMover;
-				Logger.Information(Owner(), "Process FinLinearPhase N °" + this.numPointCle,
+				Logger.Information(Owner(), "Process FinLinearPhase N �" + this.numPointCle,
 						"Phase mouvement circulaire enclenché");
 				Post(new CircularPhase(this.numPointCle + 1), mv.getDurationToReach());
 
@@ -205,21 +205,19 @@ public class EntityMouvementSequenceurDrone extends EntityMouvementSequenceur im
 
 			}
 
-
+			Post(new ScanOcean(), LogicalDuration.ofSeconds(1));
 
 		}
 
 		private boolean isNear(ISimObject o) {
 
 			int portee = 5000;
-			if (o == this)
-				return false;
-
 			if (o instanceof EntityArtefact) {
 
 				LogicalDateTime time = getCurrentLogicalDate();
 				EntityArtefact object = (EntityArtefact) o;
-				// ajouter une condition pour ne plus selectionner les artefact déjà selectionné
+				// ajouter une condition pour ne plus selectionner les artefact déjà
+				// selectionné
 				return object.getPosition().subtract(mv.getPosition(time)).magnitude() < portee && !object.isDetected()
 						&& !object.isTracked();
 
@@ -325,25 +323,20 @@ public class EntityMouvementSequenceurDrone extends EntityMouvementSequenceur im
 
 					missionCompleted = true;
 
-
 				}
-				target.setDetected(true);
 
+				target.setDetected(true);
 				List<ISimObject> objectsNavire = getEngine().requestSimObject(this::isNavire);
 				EntityNavire navire = (EntityNavire) objectsNavire.get(0);
 				navire.Post(navire.new ReceiveInfosArtefact(target), LogicalDuration.ofSeconds(1));
 				target = null;
 				isTrackingArtefact = false;
-				Post(new ComeBack(), d.add(LogicalDuration.ofSeconds(1)));
+				Post(new Montee(), d.add(LogicalDuration.ofSeconds(1)));
 			}
 
 		}
 
 		private boolean isNavire(ISimObject o) {
-
-			int portee = 5000;
-			if (o == this)
-				return false;
 
 			if (o instanceof EntityNavire) {
 
@@ -363,36 +356,38 @@ public class EntityMouvementSequenceurDrone extends EntityMouvementSequenceur im
 			Logger.Information(Owner(), "Process turn come back  ", "start come back");
 			LogicalDateTime d = getCurrentLogicalDate();
 
-			if(! missionCompleted) {
-			rectilinearMover = new RectilinearMover(d, mv.getPosition(d), positionBeforeInterruption, 10);
-			mv = rectilinearMover;
+			if (!missionCompleted) {
 
-			Logger.Information(Owner(), "Come back ",
-					"Phase come back  " + mv.getDurationToReach() + positionBeforeInterruption);
-			// on termine le mouvement en cours d'éxécution
-			if (positionNumberBeforeInterruption % 2 == 0) {
+				rectilinearMover = new RectilinearMover(d, mv.getPosition(d), positionBeforeInterruption,
+						vitesseEnsurface);
+				mv = rectilinearMover;
 
-				Post(new FinLinearPhase(positionNumberBeforeInterruption), mv.getDurationToReach());
+				Logger.Information(Owner(), "Come back ",
+						"Phase come back  " + mv.getDurationToReach() + positionBeforeInterruption);
+				// on termine le mouvement en cours d'éxécution
+				if (positionNumberBeforeInterruption % 2 == 0) {
+
+					Post(new FinLinearPhase(positionNumberBeforeInterruption), mv.getDurationToReach());
+				}
+
+				else {
+					Post(new CircularPhase(positionNumberBeforeInterruption), mv.getDurationToReach());
+				}
+
 			}
 
+			// au cas où la mission est terminée
 			else {
-				Post(new CircularPhase(positionNumberBeforeInterruption), mv.getDurationToReach());
+				rectilinearMover = new RectilinearMover(d, mv.getPosition(d), ini.getPositionsCles().get("A"),
+						vitesseEnsurface);
+				mv = rectilinearMover;
+				Post(new Arret(), mv.getDurationToReach());
+
 			}
-
 		}
-			
-		// au cas où la mission est terminée 
-	  else {
-			rectilinearMover = new RectilinearMover(d, mv.getPosition(d), ini.getPositionsCles().get("A"), 10);
-			mv = rectilinearMover;
-		  Post(new Arret(), mv.getDurationToReach());
-		  
-		}	
-	}
 
 	}
 
-	
 	public class Montee extends SimEvent {
 
 		@Override
@@ -403,15 +398,30 @@ public class EntityMouvementSequenceurDrone extends EntityMouvementSequenceur im
 			Logger.Information(Owner(), "Process Montee", "Montee");
 			LogicalDateTime d = getCurrentLogicalDate();
 
-			// On calcule les coordonn�es du point de Mont�e 
-			Point3D pointSurface = new Point3D (mv.getPosition(d).getX(),mv.getPosition(d).getY(), 0)  ;				
-				
+			// On calcule les coordonn�es du point de Mont�e
+			Point3D pointSurface = new Point3D(mv.getPosition(d).getX(), mv.getPosition(d).getY(), 0);
 
-			rectilinearMover = new RectilinearMover(d, mv.getPosition(d), pointSurface,vitesseMontee);
+			rectilinearMover = new RectilinearMover(d, mv.getPosition(d), pointSurface, vitesseMontee);
 			mv = rectilinearMover;
-            Post(new ComeBack(), mv.getDurationToReach());	 
+			Post(new ComeBack(), mv.getDurationToReach());
 		}
 	}
+
+	// ordre envoyé par le bateau
+	public class MissionCompleted extends SimEvent {
+
+		@Override
+		public void Process() {
+			// TODO Auto-generated method stub
+
+			// retourner au bateau
+			Logger.Information(Owner(), "Process MissionComplete", "MissionComplete");
+			LogicalDateTime d = getCurrentLogicalDate();
+			// On calcule les coordonnées du point de plongée
+			Post(new Montee(), LogicalDuration.ofSeconds(1));
+		}
+	}
+
 	public class Arret extends SimEvent {
 
 		@Override
@@ -424,24 +434,5 @@ public class EntityMouvementSequenceurDrone extends EntityMouvementSequenceur im
 		}
 
 	}
-
-
-	// ordre envoyé par le bateau
-	public class MissionCompleted extends SimEvent {
-
-
-		@Override
-		public void Process() {
-			// TODO Auto-generated method stub
-
-			// retourner au bateau
-			Logger.Information(Owner(), "Process MissionComplete", "MissionComplete");
-			LogicalDateTime d = getCurrentLogicalDate();
-			// On calcule les coordonnées du point de plongée
-			Post(new Montee(),LogicalDuration.ofSeconds(1));
-		}
-	}
-	
-	
 
 }
