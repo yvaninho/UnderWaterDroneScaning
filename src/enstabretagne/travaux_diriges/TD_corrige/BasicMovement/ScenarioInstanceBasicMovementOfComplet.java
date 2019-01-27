@@ -191,7 +191,7 @@ public class ScenarioInstanceBasicMovementOfComplet implements IScenarioInstance
 		bsf.getOcean().put(new EntityOceanFeature("O1"), new EntityOceanInit("Atlantique", msiOcean));
 		LogicalDateTime start = new LogicalDateTime("05/12/2017 06:00");
 		LogicalDateTime end = start.add(LogicalDuration.ofHours(3));
-		BasicMvtScenario bms = new BasicMvtScenario(new ScenarioId("S2"), bsf, start, end);
+		BasicMvtScenario bms = new BasicMvtScenario(new ScenarioId("System_Environment"), bsf, start, end);
 		return bms;
 	}
 
