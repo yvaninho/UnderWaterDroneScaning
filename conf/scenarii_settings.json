@@ -1,6 +1,6 @@
 {
     "germeInitial": 5,
-    "nbRepliques":6,
+    "nbRepliques":1,
     "scenarioInstanceClassNames": [
     "enstabretagne.travaux_diriges.TD_corrige.BasicMovement.ScenarioInstanceBasicMovementOfComplet"
 
