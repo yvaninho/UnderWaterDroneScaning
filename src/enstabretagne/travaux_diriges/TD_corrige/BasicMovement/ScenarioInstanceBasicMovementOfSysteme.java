@@ -32,7 +32,7 @@ public class ScenarioInstanceBasicMovementOfSysteme implements IScenarioInstance
 	public IScenario getScenarioInstance() {
 		BasicMvtScenarioFeatures bsf = new BasicMvtScenarioFeatures("BSF");
 		
-		//Création du navire et des points de passage
+		//CrÃ©ation du navire et des points de passage
 		/*HashMap<String,Point3D> positionsCles = new HashMap<String, Point3D>();
 		positionsCles.put("start", new Point3D(0,0,0));
 		positionsCles.put("PointCible1", new Point3D(10,10,0));
@@ -67,7 +67,7 @@ public class ScenarioInstanceBasicMovementOfSysteme implements IScenarioInstance
 		feat = new EntityMouvementSequenceurFeature("MSF");
 		bsf.getNavires().put(new EntityNavireFeature("NavireF",5,3,Color.BROWN,feat), new EntityNavireInit("Navire Observation 2", msi));
 
-		//Création de artefact
+		//CrÃ©ation de artefact
 		int i=0;
 		
 	    int seed = 42;
@@ -90,7 +90,7 @@ public class ScenarioInstanceBasicMovementOfSysteme implements IScenarioInstance
 		int NbBox = (NB*ProportionCube)/100;
 		int NbCylinder = (NB*ProportionCylindre)/100;
 		
-		//// on déclare les 3 types d'artefactes 
+		//// on dÃ©clare les 3 types d'artefactes 
 		
 		
 		TypeArtefact Sphere = TypeArtefact.SPHERE;
@@ -123,7 +123,7 @@ public class ScenarioInstanceBasicMovementOfSysteme implements IScenarioInstance
 			
 		}
 		
-	////création des cubes
+	////crÃ©ation des cubes
 		
 		for(i=0;i<NbBox;i++) 
 		{
@@ -139,7 +139,7 @@ public class ScenarioInstanceBasicMovementOfSysteme implements IScenarioInstance
 			bsf.getArtefactes().put(new EntityArtefactFeature("Cu1",5,1,Color.YELLOW,mssArtefact,Cube ), new EntityArtefactInit("Cu"+i,msiArtefact));	
 		}
 		
-		///création des Cylindres 
+		///crÃ©ation des Cylindres 
 		
 		for(i=0;i<NbCylinder;i++) 
 		{
@@ -195,7 +195,7 @@ public class ScenarioInstanceBasicMovementOfSysteme implements IScenarioInstance
 		}
 		*/
 		
-		//Création de l'ocean
+		//CrÃ©ation de l'ocean
 		positionsCles = new HashMap<String, Point3D>();
 		MovableState mstOcean = new MovableState(Point3D.ZERO, Point3D.ZERO, Point3D.ZERO, Point3D.ZERO, Point3D.ZERO, Point3D.ZERO);
 		EntityMouvementSequenceurInit msiOcean = new EntityMouvementSequenceurInit("MSIOCEAN", mstOcean, 0, 0,0,0, positionsCles, 0);
