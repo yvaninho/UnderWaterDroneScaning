@@ -2,6 +2,7 @@ package enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Navire;
 
 import java.util.ArrayList;
 
+
 import java.util.HashMap;
 import java.util.List;
 import enstabretagne.base.logger.Logger;
@@ -25,7 +26,6 @@ import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Drone.En
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.MouvementSequenceur.EntityMouvementSequenceur;
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.MouvementSequenceur.EntityMouvementSequenceurFeature;
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.MouvementSequenceur.EntityMouvementSequenceurInit;
-import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.MouvementSequenceur.EntityMouvementSequenceur_ExempleSauvegarde2.ScanOcean;
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.MouvementSequenceur.EntityMouvementSequenceurDrone;
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Navire.Representation3D.EntityNavire3DRepresentationInterface;
 import javafx.geometry.Point3D;
@@ -47,7 +47,7 @@ public class EntityNavire extends SimEntity implements IMovable, EntityNavire3DR
 		NavireFeature = (EntityNavireFeature) features;
 		drones = new ArrayList<EntityDrone>();
 		nbDroneseMax = 5;
-		listDiscoveredArtefact  = new ArrayList<EntityArtefact>();
+		listDiscoveredArtefact = new ArrayList<EntityArtefact>();
 	}
 
 	@Override
@@ -165,14 +165,14 @@ public class EntityNavire extends SimEntity implements IMovable, EntityNavire3DR
 			positionsCles.put("start", getPosition());
 			positionsCles.put("plongee", new Point3D(getPosition().getX(), getPosition().getY(), zPlongee));
 			Point3D A = new Point3D(getPosition().getX(), getPosition().getY(), zPlongee);
-			int rayon = 10000;
+			int rayon = 300;
 			int xb = (int) (getPosition().getX()
-					+ (rayon * Math.cos(0.2 + 2 * Math.PI * (drones.size() / (double) nbDroneseMax))));
+					+ (rayon * Math.cos( 2 * Math.PI * (drones.size() / (double) nbDroneseMax))));
 			int yb = (int) (getPosition().getY()
-					+ (rayon * Math.sin(0.2 + 2 * Math.PI * (drones.size() / (double) nbDroneseMax))));
+					+ (rayon * Math.sin( 2 * Math.PI * (drones.size() / (double) nbDroneseMax))));
 			Point3D B = new Point3D(xb, yb, zPlongee);
-			Logger.Detail(this, "DroneLunch.Process",
-					"Création du sous marin au point " + (drones.size() / nbDroneseMax) + " " + B);
+/*			Logger.Detail(this, "DroneLunch.Process",
+					"Création du sous marin au point " + (drones.size() / nbDroneseMax) + " " + B);*/
 
 			positionsCles.put("A", A);
 			positionsCles.put("B", B);
@@ -194,7 +194,7 @@ public class EntityNavire extends SimEntity implements IMovable, EntityNavire3DR
 
 			if (drones.size() < nbDroneseMax) {
 
-				Post(new DroneLunch(), getCurrentLogicalDate().add(LogicalDuration.ofSeconds(10)));
+				Post(new DroneLunch(), getCurrentLogicalDate().add(LogicalDuration.ofMinutes(10)));
 			}
 
 		}
@@ -217,16 +217,15 @@ public class EntityNavire extends SimEntity implements IMovable, EntityNavire3DR
 
 			Logger.Information(Owner(), " Start ReceiveInfosArtefact ", " ReceiveInfosArtefact ");
 			listDiscoveredArtefact.add(artefact);
-			
+
 			if (artefact.getName().equals("Objet0")) {
 
 				// On demande à tous les drones de revenir à la base.
-
 				List<ISimObject> objectsSeqDrones = getEngine().requestSimObject(this::isDroneSequenceur);
 				EntityMouvementSequenceurDrone droneSeq;
-				System.out.println(" taille "+objectsSeqDrones.size());
+				System.out.println(" taille " + objectsSeqDrones.size());
 				for (ISimObject objet : objectsSeqDrones) {
-
+					
 					droneSeq = (EntityMouvementSequenceurDrone) objet;
 					droneSeq.Post(droneSeq.new MissionCompleted(), LogicalDuration.ofSeconds(1));
 
@@ -239,9 +238,7 @@ public class EntityNavire extends SimEntity implements IMovable, EntityNavire3DR
 		private boolean isDroneSequenceur(ISimObject o) {
 
 			if (o instanceof EntityMouvementSequenceurDrone) {
-
 				return true;
-
 			}
 			return false;
 		}

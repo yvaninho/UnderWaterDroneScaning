@@ -182,15 +182,14 @@ public class ScenarioInstanceBasicMovementOfComplet implements IScenarioInstance
 			
 		}
 		
-
-		
 		//Création de l'ocean
+		
 		positionsCles = new HashMap<String, Point3D>();
 		MovableState mstOcean = new MovableState(Point3D.ZERO, Point3D.ZERO, Point3D.ZERO, Point3D.ZERO, Point3D.ZERO, Point3D.ZERO);
 		EntityMouvementSequenceurInit msiOcean = new EntityMouvementSequenceurInit("MSIOCEAN", mstOcean, 0, 0,0,0, positionsCles, 0);
 		bsf.getOcean().put(new EntityOceanFeature("O1"), new EntityOceanInit("Atlantique", msiOcean));
 		LogicalDateTime start = new LogicalDateTime("05/12/2017 06:00");
-		LogicalDateTime end = start.add(LogicalDuration.ofHours(6));
+		LogicalDateTime end = start.add(LogicalDuration.ofHours(4));
 		BasicMvtScenario bms = new BasicMvtScenario(new ScenarioId("System_Environment"), bsf, start, end);
 		return bms;
 	}
