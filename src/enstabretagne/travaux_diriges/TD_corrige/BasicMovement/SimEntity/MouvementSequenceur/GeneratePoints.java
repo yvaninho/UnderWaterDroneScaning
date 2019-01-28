@@ -1,45 +1,264 @@
 package enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.MouvementSequenceur;
 
-import java.util.HashMap;
 
-import enstabretagne.base.time.LogicalDateTime;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import javafx.geometry.Point3D;
 
 public class GeneratePoints {
-	
-	private HashMap<String, Point3D> pointsClefs ;
-	
-	public GeneratePoints(HashMap<String, Point3D> pointsClefs) {
 
-		this.pointsClefs = pointsClefs ;
-	
+	private Point3D startingPt;
+	private Point3D endPoint;
+	private Integer nbOscillation;
+	private double amp;
+	private double d;
+
+	public Integer getNbOsicillation() {
+		return nbOscillation;
 	}
-	
-	public HashMap<String, Point3D> getPoints(int nbPoints) {
 
-		Point3D A = pointsClefs.get("A");
-		
-		Point3D B = pointsClefs.get("B");
-		int amplitude = (int) (B.getY() - A.getY());
-		int L = (int) (B.getX() - A.getX());
-		String pointName = "";
-		int x;
-		int y;
-		int k = 1;
-		int zPlongee = 0;
-		for (int i = 0; i <= nbPoints; i = i + 2) {
+	public GeneratePoints(Point3D A, Point3D B, int nbOs) {
+		this.startingPt = A;
+		this.endPoint = B;
+		this.nbOscillation = nbOs;
+		if (Math.abs(endPoint.getY()) != Math.abs(startingPt.getY()))
+			this.amp = Math.abs(endPoint.getY()) - Math.abs(startingPt.getY());
+		else
+			this.amp = 50; // amplitude max
+		this.d = (Math.abs(endPoint.getX()) - Math.abs(startingPt.getX())) / (nbOscillation * 2);
+	}
 
-			pointName = "PointCible" + i;
-			x = ((L * i) / nbPoints);
-			y = (amplitude * (k % 2));
-			pointsClefs.put(pointName, new Point3D(x, y, zPlongee));
-			x = (L * (i + 1)) / nbPoints;
-			y = (amplitude * (k % 2));
-			pointName = "PointCible" + (i + 1);
-			pointsClefs.put(pointName, new Point3D(x, y, zPlongee));
-			k++;
+	public HashMap<String, Point3D> getPoints() {
+		if (endPoint.getX() <= 0 && endPoint.getY() <= 0) {
+			System.out.println("construction tangente");
+			return tanConstruct();
 		}
-		return pointsClefs;
+			
+		else if (endPoint.getX() >= 0 && endPoint.getY() >= 0) {
+			System.out.println("construction All");
+			return (HashMap<String, Point3D>) AllConstruct();
+		}
+		
+		else if (endPoint.getX() >= 0 && endPoint.getY() <= 0) {
+			System.out.println("construction sinus");
+			return cosConstruct();
+		}
+		
+		else {
+			System.out.println("construction cosnus");
+			return sinConstruct();
+		}
+		
 
 	}
+	
+	
+
+	public Map<String, Point3D> AllConstruct() {
+		Map<String, Point3D> positionsClesP = new LinkedHashMap<String, Point3D>();
+		ArrayList<Point3D> L = new ArrayList<>();
+		ArrayList<Point3D> Ls = new ArrayList<>();
+		positionsClesP.put("start", startingPt);
+		L.add(startingPt);
+		Ls = L;
+		int j=0;
+		for (int i = 0; i < nbOscillation; i++) {
+			int k=0;
+			k++;
+			Point3D p = Ls.get(L.size() - 1);
+			p = p.add(0, amp, 0);
+			positionsClesP.put("PointCible"+(k+j), p);
+			L.add(p);
+
+			p = p.add(d, 0, 0);
+			k++;
+			positionsClesP.put("PointCible"+(k+j), p);
+			L.add(p);
+			k++;
+			p = p.subtract(0, amp, 0);
+			positionsClesP.put("PointCible"+(k+j), p);
+			L.add(p);
+			k++;
+			p = p.add(d, 0, 0);
+			positionsClesP.put("PointCible"+(k+j), p);
+			L.add(p);
+			Ls = L;
+			j=j+4;
+		}
+		
+		
+
+		if (L.get(L.size() - 1).getY() != endPoint.getY()) {
+			Point3D p = Ls.get(L.size() - 1);
+			
+				p = p.add(0, amp, 0);
+			
+			System.out.println("boucle :" + " fin point " + p);
+			positionsClesP.put("PointCible"+ (nbOscillation*4+1), p);
+			Ls.add(p);
+		}
+
+		//positionsClesP.put("endPt", endPoint);
+		Ls.add(endPoint);
+
+		return positionsClesP;
+	}
+	
+	
+	private HashMap<String, Point3D> cosConstruct() {
+		Map<String, Point3D> positionsClesP = new LinkedHashMap<String, Point3D>();
+		ArrayList<Point3D> L = new ArrayList<>();
+		ArrayList<Point3D> Ls = new ArrayList<>();
+		positionsClesP.put("start", startingPt);
+		L.add(startingPt);
+		Ls = L;
+		int j = 0;
+		for (int i = 0; i < nbOscillation; i++) {
+			int k=0;
+			k++;
+			Point3D p = Ls.get(L.size() - 1);
+			p = p.subtract(0, amp, 0);
+			positionsClesP.put("PointCible"+(k+j), p);
+			L.add(p);
+			k++;
+			p = p.add(d, 0, 0);
+
+			positionsClesP.put("PointCible"+(k+j), p);
+			L.add(p);
+			k++;
+			p = p.add(0, amp, 0);
+			positionsClesP.put("PointCible"+(k+j), p);
+			L.add(p);
+			k++;
+			p = p.add(d, 0, 0);
+			positionsClesP.put("PointCible"+(k+j), p);
+			L.add(p);
+			Ls = L;
+			j=j+4;
+
+		}
+		
+
+		if (Ls.get(L.size() - 1).getY() != endPoint.getY()) {
+			Point3D p = Ls.get(L.size() - 1);
+			
+			p = p.subtract(0, amp, 0);
+			System.out.println("boucle :" + " fin point " + p);
+			positionsClesP.put("PointCible"+ (nbOscillation*4+1), p);
+			L.add(p);
+			Ls.add(p);
+		}
+
+		//positionsClesP.put("endPt", endPoint);
+		//System.out.println("Points"+positions);
+		//Ls.add(endPoint);
+
+		return (HashMap<String, Point3D>) positionsClesP;
+	}
+
+	private HashMap<String, Point3D> sinConstruct() {
+		Map<String, Point3D> positionsClesP = new LinkedHashMap<String, Point3D>();
+		ArrayList<Point3D> L = new ArrayList<>();
+		ArrayList<Point3D> Ls = new ArrayList<>();
+		positionsClesP.put("start", startingPt);
+		L.add(startingPt);
+		Ls = L;
+		int j=0;
+		for (int i = 0; i < nbOscillation; i++) {
+			int k=0;
+			k++;
+			Point3D p = Ls.get(L.size() - 1);
+			p = p.add(0, amp, 0);
+			positionsClesP.put("PointCible"+(k+j), p);
+			L.add(p);
+			System.out.println("boucle : "+i + " : " + p);
+			k++;
+			p = p.subtract(d, 0, 0);
+			positionsClesP.put("PointCible"+(k+j), p);
+			L.add(p);
+			System.out.println("boucle : "+i + " : " + p);
+			k++;
+			p = p.subtract(0, amp, 0);
+			positionsClesP.put("PointCible"+(k+j), p);
+			L.add(p);
+			System.out.println("boucle : "+i + " : " + p);
+			k++;
+			p = p.subtract(d, 0, 0);
+			positionsClesP.put("PointCible"+(k+j), p);
+			L.add(p);
+			System.out.println("boucle : "+i + " : " + p);
+			Ls = L;
+			j=j+4;
+
+		}
+		if (L.get(L.size() - 1).getY() != endPoint.getY()) {
+			Point3D p = Ls.get(L.size() - 1);
+			
+				p = p.add(0, amp, 0);
+			
+
+			System.out.println("boucle :" + " fin point " + p);
+			positionsClesP.put("PointCible"+ (nbOscillation*4+1), p);
+			Ls.add(p);
+		}
+
+		//positionsClesP.put("endPt", endPoint);
+		//Ls.add(endPoint);
+
+		return (HashMap<String, Point3D>) positionsClesP;
+	}
+
+	public HashMap<String, Point3D> tanConstruct() {
+		Map<String, Point3D> positionsClesP = new LinkedHashMap<String, Point3D>();
+		ArrayList<Point3D> L = new ArrayList<>();
+		ArrayList<Point3D> Ls = new ArrayList<>();
+		positionsClesP.put("start", startingPt);
+		L.add(startingPt);
+		Ls = L;
+		int j=0;
+		for (int i = 0; i < nbOscillation; i++) {
+			int k=0;
+			k++;
+			Point3D p = Ls.get(L.size() - 1);
+			p = p.subtract(0, amp, 0);
+			positionsClesP.put("PointCible"+(k+j), p);
+			L.add(p);
+			k++;
+			p = p.subtract(d, 0, 0);
+			positionsClesP.put("PointCible"+(k+j), p);
+			L.add(p);
+			k++;
+			p = p.add(0, amp, 0);
+			positionsClesP.put("PointCible"+(k+j), p);
+			L.add(p);
+			k++;
+			p = p.subtract(d, 0, 0);
+			positionsClesP.put("PointCible"+(k+j), p);
+			L.add(p);
+			Ls = L;
+			j=j+4;
+
+		}
+
+		if (L.get(L.size() - 1).getY() != endPoint.getY()) {
+			Point3D p = Ls.get(L.size() - 1);
+			
+			p = p.subtract(0, amp, 0);
+			
+
+			System.out.println("boucle :" + " fin point " + p);
+			positionsClesP.put("PointCible"+ (nbOscillation*4+1), p);
+			Ls.add(p);
+		}
+
+		//positionsClesP.put("endPt", endPoint);
+		//Ls.add(endPoint);
+
+		return (HashMap<String, Point3D>) positionsClesP;
+	}
+
 }
