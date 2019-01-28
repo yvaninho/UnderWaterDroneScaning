@@ -1,30 +1,53 @@
 package testVerificationValidation;
 
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
+
 import com.codoid.products.exception.FilloException;
-import com.codoid.products.fillo.Connection;
-import com.codoid.products.fillo.Fillo;
 import com.codoid.products.fillo.Recordset;
 
-public class ValidationBateau {
+import enstabretagne.base.time.LogicalDateTime;
+import enstabretagne.base.time.LogicalDuration;
 
-	public static void main(String[] args) throws FilloException {
-		System.out.println("Working Directory = " + System.getProperty("user.dir"));
-
-		Fillo fillo = new Fillo();
-		Connection connection = fillo.getConnection("log\\1548548316685BasicMovement.xlsx");
-		System.out.println("Fichier Chargé");
-		// String strQuery="Select * from Logs where ID=100 and name='John'";
-		String strQuery = "Select * from Logs Message like '%'";
-		Recordset recordset = connection.executeQuery(strQuery);
-
-		while (recordset.next()) {
-			System.out.println(recordset);
-			//System.out.println(recordset.getField("Message"));
+public class ValidationCapaciteDeploiement extends AbstractTest{
+	
+		@Test
+		public void test() throws FilloException {
+			query();
+			
+			for (int i=0; i<=getListSousmarinDeploye().size()-2;i++)
+			{
+				LogicalDateTime date1 = new LogicalDateTime(getListSousmarinDeploye().get(i));  //date du premier drone
+				LogicalDateTime date2 = new LogicalDateTime(getListSousmarinDeploye().get(i+1));  // date du drone qui suit le precedent
+				LogicalDuration d = date2.soustract(date1);
+				assertEquals(LogicalDuration.ofMinutes(10).toString(), d.toString()); // date2 - date1
+			}
+			
+			
 		}
 
-		recordset.close();
-		connection.close();
+		@Override
+		public String filePath() {
+			
+			return "deploiementUnderWaterDetection.xlsx";
+		}
 
-	}
+		@Override
+		public void query() throws FilloException {
+			
+			String strQuery = "Select * from Logs where Message like '%deployé%'";
+			Recordset recordset = getConnectionFile().executeQuery(strQuery);
+			
 
+			while (recordset.next()) {
+				String a;
+				a = recordset.getField("Temps Logique");
+				getListSousmarinDeploye().add(a);		
+				
+			}
+			
+			recordset.close();
+			
+		}
 }
