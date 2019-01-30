@@ -28,7 +28,7 @@ import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Ocean.En
 import javafx.geometry.Point3D;
 import javafx.scene.paint.Color;
 
-public class ScenarioInstanceBasicMovementOfComplet implements IScenarioInstance {
+public class ScenarioInstanceBasicMovementOfComplet2 implements IScenarioInstance {
 
 	@Override
 	public IScenario getScenarioInstance() {
@@ -57,7 +57,7 @@ public class ScenarioInstanceBasicMovementOfComplet implements IScenarioInstance
 		
 		int i=0;
 		
-	    int seed = 42;
+	    int seed = 10;
 	    int Xocean = 10000;
 	    int Yocean = 10000;
 	    int Zocean = -3000;
@@ -175,7 +175,7 @@ public class ScenarioInstanceBasicMovementOfComplet implements IScenarioInstance
 		bsf.getOcean().put(new EntityOceanFeature("O1"), new EntityOceanInit("Atlantique", msiOcean));
 		LogicalDateTime start = new LogicalDateTime("05/12/2017 06:00");
 		LogicalDateTime end = start.add(LogicalDuration.ofHours(10));
-		BasicMvtScenario bms = new BasicMvtScenario(new ScenarioId("Scénariot1"), bsf, start, end);
+		BasicMvtScenario bms = new BasicMvtScenario(new ScenarioId("Scénariot2"), bsf, start, end);
 		return bms;
 	}
 

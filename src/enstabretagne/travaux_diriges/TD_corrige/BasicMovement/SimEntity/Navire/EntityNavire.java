@@ -1,9 +1,6 @@
 package enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Navire;
 
 import java.util.ArrayList;
-
-
-
 import java.util.HashMap;
 import java.util.List;
 import enstabretagne.base.logger.Logger;
