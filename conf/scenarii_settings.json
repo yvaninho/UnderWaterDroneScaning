@@ -1,8 +1,8 @@
 {
     "germeInitial": 5,
-    "nbRepliques":6,
+    "nbRepliques":1,
     "scenarioInstanceClassNames": [
-        "enstabretagne.travaux_diriges.TD_corrige.BasicMovement.ScenarioInstanceBasicMovement2",
-        "enstabretagne.travaux_diriges.TD_corrige.BasicMovement.ScenarioInstanceBasicMovement"
+    "enstabretagne.travaux_diriges.TD_corrige.BasicMovement.ScenarioInstanceBasicMovementOfComplet",
+  "enstabretagne.travaux_diriges.TD_corrige.BasicMovement.ScenarioInstanceBasicMovementOfComplet2"
     ]
 }
