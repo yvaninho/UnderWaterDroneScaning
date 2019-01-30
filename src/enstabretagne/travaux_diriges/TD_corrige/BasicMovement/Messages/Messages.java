@@ -30,7 +30,6 @@ public class Messages {
 	public static final String TurnAround = "Start Turn Around Target %s"; 	
 	
 	
-	
 	/** The Constant ClassifyTarget */
 	public static final String ClassifyTarget = "Phase Classify Target %s"; 
 	
