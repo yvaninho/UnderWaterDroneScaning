@@ -3,6 +3,7 @@ package enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Navire;
 import java.util.ArrayList;
 
 
+
 import java.util.HashMap;
 import java.util.List;
 import enstabretagne.base.logger.Logger;
@@ -17,6 +18,7 @@ import enstabretagne.simulation.components.data.SimInitParameters;
 import enstabretagne.simulation.components.implementation.SimEntity;
 import enstabretagne.simulation.core.ISimObject;
 import enstabretagne.simulation.core.implementation.SimEvent;
+import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.Messages.Messages;
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Artefact.EntityArtefact;
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Bouee.Bouee;
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Bouee.BoueeInit;
@@ -74,7 +76,7 @@ public class EntityNavire extends SimEntity implements IMovable, EntityNavire3DR
 	protected void AfterActivate(IEntity sender, boolean starting) {
 		Logger.Detail(this, "AfterActivate", "Activation de Navire");
 		rmv.activate();
-		Post(new DroneLunch(), getCurrentLogicalDate().add(LogicalDuration.ofSeconds(1)));
+		Post(new DroneLunch());
 
 	}
 
@@ -158,14 +160,14 @@ public class EntityNavire extends SimEntity implements IMovable, EntityNavire3DR
 		public void Process() {
 			// TODO Auto-generated method stub
 
-			Logger.Detail(this, "DroneLunch.Process", "Création du sous marin");
-			int zPlongee = 0;
+			Logger.Detail(this, "DroneLunch.Process", String.format(Messages.DroneLaunch,(drones.size()+1)));
+			int zPlongee = -10;
 			// Création du drone et des points de passage
 			HashMap<String, Point3D> positionsCles = new HashMap<String, Point3D>();
 			positionsCles.put("start", getPosition());
 			positionsCles.put("plongee", new Point3D(getPosition().getX(), getPosition().getY(), zPlongee));
 			Point3D A = new Point3D(getPosition().getX(), getPosition().getY(), zPlongee);
-			int rayon = 300;
+			int rayon = 800;
 			int xb = (int) (getPosition().getX()
 					+ (rayon * Math.cos( 2 * Math.PI * (drones.size() / (double) nbDroneseMax))));
 			int yb = (int) (getPosition().getY()
@@ -227,7 +229,7 @@ public class EntityNavire extends SimEntity implements IMovable, EntityNavire3DR
 				for (ISimObject objet : objectsSeqDrones) {
 					
 					droneSeq = (EntityMouvementSequenceurDrone) objet;
-					droneSeq.Post(droneSeq.new MissionCompleted(), LogicalDuration.ofSeconds(1));
+					droneSeq.Post(droneSeq.new MissionCompleted(), LogicalDuration.ofSeconds(3));
 
 				}
 
