@@ -44,15 +44,7 @@ public class ScenarioInstanceBasicMovementOfComplet implements IScenarioInstance
 		
 ///////////////////////////////////moi ////////////////////////////////////////		
 		HashMap<String,Point3D> positionsCles = new HashMap<String, Point3D>();
-		positionsCles.put("start", new Point3D(0,0,0));
-		positionsCles.put("PointCible1", new Point3D(0,0,0));
-		positionsCles.put("PointCible2", new Point3D(0,0,0));
-		positionsCles.put("PointCible3", new Point3D(0,0,0));
-		positionsCles.put("PointDirection", new Point3D(0,0,0));
-		positionsCles.put("PointSousEau", new Point3D(0,0,0));
-		positionsCles.put("ObservationMine", new Point3D(0,0,0));
-	
-		
+		positionsCles.put("start", new Point3D(0,0,0));	
 		
 ///////////////////////////////////moi ////////////////////////////////////////			
 
@@ -154,7 +146,7 @@ public class ScenarioInstanceBasicMovementOfComplet implements IScenarioInstance
 			
 			mssArtefact = new EntityMouvementSequenceurFeature("Cy"+i);
 			
-			mstArtefact = new MovableState(new Point3D(X,Y,100), Point3D.ZERO, Point3D.ZERO, Point3D.ZERO, Point3D.ZERO, Point3D.ZERO);
+			mstArtefact = new MovableState(new Point3D(X,Y,Z), Point3D.ZERO, Point3D.ZERO, Point3D.ZERO, Point3D.ZERO, Point3D.ZERO);
 			msiArtefact= new EntityMouvementSequenceurInit("MSI", mstArtefact, 0, 0,0,0, positionsCles, 0);
 			bsf.getArtefactes().put(new EntityArtefactFeature("Cy1",5,1,Color.GREEN,mssArtefact,Cylinder ), new EntityArtefactInit("Cy"+i,msiArtefact));
 			
