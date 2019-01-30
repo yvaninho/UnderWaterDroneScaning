@@ -16,10 +16,10 @@ public class ValidationCapaciteDeploiement extends AbstractTest{
 		public void test() throws FilloException {
 			query();
 			
-			for (int i=0; i<=getListSousmarinDeploye().size()-2;i++)
+			for (int i=0; i<=getListlog().size()-2;i++)
 			{
-				LogicalDateTime date1 = new LogicalDateTime(getListSousmarinDeploye().get(i));  //date du premier drone
-				LogicalDateTime date2 = new LogicalDateTime(getListSousmarinDeploye().get(i+1));  // date du drone qui suit le precedent
+				LogicalDateTime date1 = new LogicalDateTime(getListlog().get(i));  //date du premier drone
+				LogicalDateTime date2 = new LogicalDateTime(getListlog().get(i+1));  // date du drone qui suit le precedent
 				LogicalDuration d = date2.soustract(date1);
 				assertEquals(LogicalDuration.ofMinutes(10).toString(), d.toString()); // date2 - date1
 			}
@@ -43,7 +43,7 @@ public class ValidationCapaciteDeploiement extends AbstractTest{
 			while (recordset.next()) {
 				String a;
 				a = recordset.getField("Temps Logique");
-				getListSousmarinDeploye().add(a);		
+				getListlog().add(a);		
 				
 			}
 			

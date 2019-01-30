@@ -13,12 +13,12 @@ public abstract class AbstractTest {
 	public abstract String filePath();
 	public abstract void query() throws FilloException; 
 	
-	protected ArrayList<String> listSousmarinDeploye;
+	protected ArrayList<String> listLog;
 	protected Connection connection;
 	protected Fillo fillo ;
 	
-	public ArrayList<String> getListSousmarinDeploye() {
-		return listSousmarinDeploye;
+	public ArrayList<String> getListlog() {
+		return listLog;
 	}
 
 	public Connection load () throws FilloException {
@@ -31,7 +31,7 @@ public abstract class AbstractTest {
 	@Before
 	public void before() throws FilloException {
 		fillo = new Fillo();
-		listSousmarinDeploye =  new ArrayList<>();
+		listLog =  new ArrayList<>();
 		this.connection=load();
 	}
 	
