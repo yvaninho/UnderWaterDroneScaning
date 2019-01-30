@@ -44,9 +44,7 @@ public class BasicMvtScenario extends SimScenario{
 		super.AfterActivate(sender, starting);
 		
 		BasicMvtScenarioFeatures feature = (BasicMvtScenarioFeatures) getFeatures();
-		Logger.Detail(this, "afteractivate", "taille liste bouees = %s", feature.getBouees().size());
-
-
+		
 		for(Map.Entry<EntityNavireFeature, EntityNavireInit> e : feature.getNavires().entrySet())
 		{
 			Logger.Detail(this, "afteractivate", "navire à créer = %s , %s", e.getValue(),e.getKey());
@@ -70,7 +68,7 @@ public class BasicMvtScenario extends SimScenario{
 		
 		for(Map.Entry<EntityOceanFeature, EntityOceanInit> e : feature.getOcean().entrySet())
 		{
-			Logger.Detail(this, "afteractivate", "navire à créer = %s , %s", e.getValue(),e.getKey());
+			Logger.Detail(this, "afteractivate", "Ocean à créer = %s , %s", e.getValue(),e.getKey());
 			Post(new OceanArrival(e.getValue(),e.getKey()));
 		}
 		
