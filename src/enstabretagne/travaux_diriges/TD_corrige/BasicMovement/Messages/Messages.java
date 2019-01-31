@@ -24,14 +24,14 @@ public class Messages {
 	public static final String Plongee = "Start Plongee %s %s";
 	
 	/** The Constant TrackTarget */
-	public static final String TrackTarget = "Start Track Target %s"; 
+	public static final String TrackTarget = "Start Track Target %s %s"; 
 	
 	/** The Constant TurnAround */
-	public static final String TurnAround = "Start Turn Around Target %s"; 	
+	public static final String TurnAround = "Start Turn Around Target %s %s"; 	
 	
 	
 	/** The Constant ClassifyTarget */
-	public static final String ClassifyTarget = "Phase Classify Target %s"; 
+	public static final String ClassifyTarget = "Phase Classify Target %s %s"; 
 	
 	/** The Constant ObjectFound */
 	public static final String ObjectFound = "Object found %s" ; 
@@ -52,5 +52,9 @@ public class Messages {
 	
 	public static final String Arret = "Mode arret : %s" ; 
 	
+	
+	/** The Constant DureeRecherche */
+	
+	public static final String DureeRecherche = "Duree %s" ; 
 }
 

@@ -1,8 +1,12 @@
 package enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.MouvementSequenceur;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import enstabretagne.base.logger.Logger;
 import enstabretagne.base.logger.ToRecord;
 import enstabretagne.base.time.LogicalDateTime;
@@ -12,11 +16,11 @@ import enstabretagne.simulation.components.data.SimFeatures;
 import enstabretagne.simulation.components.data.SimInitParameters;
 import enstabretagne.simulation.core.ISimObject;
 import enstabretagne.simulation.core.implementation.SimEvent;
+import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.Messages.Constantes;
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.Messages.Messages;
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Artefact.EntityArtefact;
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Bouee.IMover;
 import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Navire.EntityNavire;
-import enstabretagne.travaux_diriges.TD_corrige.BasicMovement.SimEntity.Navire.EntityNavire.ReceiveInfosArtefact;
 import javafx.geometry.Point3D;
 
 @ToRecord(name = "MouvementSequenceur")
@@ -38,19 +42,20 @@ public class EntityMouvementSequenceurDrone extends EntityMouvementSequenceur im
 	 * Definition des différentes vitesses
 	 * 
 	 */
-//	utiliser pour accelerer la vitesse de simulation
+	// utiliser pour accelerer la vitesse de simulation
 	private int facteurDacceleration = 1;
 	// vitesse en surface 4m/s
 
-	private int vitesseEnsurface = 4*facteurDacceleration  ;
+	private int vitesseEnsurface = 4 * facteurDacceleration;
 	// vitesse de plongee du drone est de 1m/s
-	private int vitessePlongee = 1;
+	private int vitessePlongee = 1 * facteurDacceleration;
 	// vitesse de remontee en surface Ã  une vitesse de 2m/s
-	private int vitesseMontee = 2 ;
+	private int vitesseMontee = 2 * facteurDacceleration;
 	// vitesse du drone sous l'eau
-	private int vitesseSousleau = 3*facteurDacceleration  ;
+	private int vitesseSousleau = 3 * facteurDacceleration;
 	/** Définiton du niveau d'energie ***/
 	private int niveauDenergie = 27000;
+
 	public EntityMouvementSequenceurDrone(String name, SimFeatures features) {
 		super(name, features);
 	}
@@ -70,11 +75,11 @@ public class EntityMouvementSequenceurDrone extends EntityMouvementSequenceur im
 
 		Logger.Detail(this, "AfterActivate", "Activation de MouvementSequenceur");
 		// Logger.Detail(this, "Taille ", "Taille "+this.pointsClefs.size());
-		Logger.Detail(this, "AfterActivate", "positions "+ini.getPositionsCles());
+		Logger.Detail(this, "AfterActivate", "positions " + ini.getPositionsCles());
 		Post(new LinearPhase(1));
 		Post(new Consumption());
 		// on lance le premier scan
-	    Post(new ScanOcean(), LogicalDuration.ofSeconds(2));
+		Post(new ScanOcean(), LogicalDuration.ofSeconds(2));
 	}
 
 	@Override
@@ -94,22 +99,20 @@ public class EntityMouvementSequenceurDrone extends EntityMouvementSequenceur im
 
 			// si le drone se déplace
 			if (!(mv instanceof StaticMover)) {
-				niveauDenergie-=4;
+				niveauDenergie -= 4;
 			}
 
 			// si le niveau d'energie est inférieur à un seuil alors on remonte vers le
 			// bateau
 
 			if (niveauDenergie < 4) {
-				 
+
 				Post(new Montee());
-				
-			}
-			else if(!missionCompleted)
-				{
+
+			} else if (!missionCompleted) {
 				Post(this, LogicalDuration.ofSeconds(1));
-				}
-				
+			}
+
 		}
 
 	}
@@ -131,8 +134,9 @@ public class EntityMouvementSequenceurDrone extends EntityMouvementSequenceur im
 				LogicalDateTime d = getCurrentLogicalDate();
 				// On sauvegarde le numero du Point
 				positionNumberBeforeInterruption = this.numPointCle;
-				
-				Logger.Information(Owner(), "Process Linear", String.format(Messages.StartLinearPhase,mv.getPosition(d), ini.getPositionsCles().get("PointCible" + numPointCle)));
+
+				Logger.Information(Owner(), "Process Linear", String.format(Messages.StartLinearPhase,
+						mv.getPosition(d), ini.getPositionsCles().get("PointCible" + numPointCle)));
 
 				rectilinearMover = new RectilinearMover(d, mv.getPosition(d),
 						ini.getPositionsCles().get("PointCible" + numPointCle), ini.getMaxLinearSpeed());
@@ -155,15 +159,15 @@ public class EntityMouvementSequenceurDrone extends EntityMouvementSequenceur im
 
 		@Override
 		public void Process() {
-			
-			LogicalDateTime d = getCurrentLogicalDate(); 
-			
+
+			LogicalDateTime d = getCurrentLogicalDate();
+
 			if (isTrackingArtefact) {
 
 			} else {
 
-				Logger.Information(Owner(), "Process Circular",
-						String.format(Messages.StartCirculaire,mv.getPosition(d), ini.getPositionsCles().get("PointCible" + numPointClef)));
+				Logger.Information(Owner(), "Process Circular", String.format(Messages.StartCirculaire,
+						mv.getPosition(d), ini.getPositionsCles().get("PointCible" + numPointClef)));
 
 				// on sauvegarde les parametres
 				positionNumberBeforeInterruption = numPointClef;
@@ -183,7 +187,7 @@ public class EntityMouvementSequenceurDrone extends EntityMouvementSequenceur im
 		@Override
 		public void Process() {
 
-			Logger.Information(Owner(), "Process Scan ocean",  String.format(Messages.ScanOcean,getParent().getName()));
+			Logger.Information(Owner(), "Process Scan ocean", String.format(Messages.ScanOcean, getParent().getName()));
 			LogicalDateTime d = getCurrentLogicalDate();
 			// faire le choix de la bouee la plus proche
 			List<ISimObject> objectsNear = getEngine().requestSimObject(this::isNear);
@@ -231,7 +235,8 @@ public class EntityMouvementSequenceurDrone extends EntityMouvementSequenceur im
 				EntityArtefact object = (EntityArtefact) o;
 				// ajouter une condition pour ne plus selectionner les artefact deja
 				// selectionne
-				return object.getPosition().subtract(mv.getPosition(time)).magnitude() < portee && !object.isDetected() && !object.isTracked();
+				return object.getPosition().subtract(mv.getPosition(time)).magnitude() < portee && !object.isDetected()
+						&& !object.isTracked();
 
 			}
 			return false;
@@ -245,7 +250,8 @@ public class EntityMouvementSequenceurDrone extends EntityMouvementSequenceur im
 		public void Process() {
 
 			LogicalDateTime d = getCurrentLogicalDate();
-			Logger.Information(Owner(), "Process Plongee", String.format(Messages.Plongee,getPosition(d), getParent().getName()));
+			Logger.Information(Owner(), "Process Plongee",
+					String.format(Messages.Plongee,getParent().getName(), getPosition(d)));
 			Point3D plongee = getPosition(d).add(0, 0, ini.getPositionsCles().get("plongee").getZ());
 			rectilinearMover = new RectilinearMover(d, mv.getPosition(d), plongee, vitessePlongee);
 			mv = rectilinearMover;
@@ -260,7 +266,7 @@ public class EntityMouvementSequenceurDrone extends EntityMouvementSequenceur im
 			// TODO Auto-generated method stub
 			isTrackingArtefact = true;
 			LogicalDateTime d = getCurrentLogicalDate();
-			Logger.Information(Owner(), "Process trackTarget", String.format(Messages.TrackTarget, getPosition(d)));
+			Logger.Information(Owner(), "Process trackTarget", String.format(Messages.TrackTarget,getParent().getName(), getPosition(d)));
 			double rayon = 2;
 			Point3D monPoint = new Point3D(1, 0, 0).multiply(rayon);
 			// On sauvegarde la position
@@ -287,12 +293,13 @@ public class EntityMouvementSequenceurDrone extends EntityMouvementSequenceur im
 			// TODO Auto-generated method stub
 			isTrackingArtefact = true;
 			LogicalDateTime d = getCurrentLogicalDate();
-			Logger.Information(Owner(), "Process TurnAroundtarget ", String.format(Messages.TurnAround, getPosition(d)));
+			Logger.Information(Owner(), "Process TurnAroundtarget ",
+					String.format(Messages.TurnAround, getParent().getName(), getPosition(d)));
 			double rayon = 2;
 			Point3D monPoint = new Point3D(rayon * Math.cos((theta * Math.PI) / (180)),
 					rayon * Math.sin((theta * Math.PI) / (180)), 0);
 			Point3D currentPosition = target.getPosition().add(monPoint);
-			rectilinearMover = new RectilinearMover(d, mv.getPosition(d), currentPosition, 10);
+			rectilinearMover = new RectilinearMover(d, mv.getPosition(d), currentPosition, vitesseSousleau);
 			mv = rectilinearMover;
 			if (theta < 360) {
 				Post(new TurnAround(this.theta + 10), mv.getDurationToReach());
@@ -312,12 +319,31 @@ public class EntityMouvementSequenceurDrone extends EntityMouvementSequenceur im
 		public void Process() {
 			// TODO Auto-generated method stub
 			LogicalDateTime d = getCurrentLogicalDate();
-			Logger.Information(Owner(), "Process ClassifyTarget ", String.format(Messages.ClassifyTarget, getPosition(d)));
+			Logger.Information(Owner(), "Process ClassifyTarget ",
+					String.format(Messages.ClassifyTarget, getParent().getName(), getPosition(d)));
 
 			if (target != null) {
 
 				if (target.getName().equals("Objet0")) {
-					Logger.Information(Owner(), "Classify Target ", String.format(Messages.ObjectFound, getPosition(d)));
+					Logger.Information(Owner(), "Classify Target ",
+							String.format(Messages.ObjectFound, getParent().getName(), getPosition(d)));
+
+					// on met la durée dans un fichier afin de faire la moyenne sans avoir à faire
+					// un filtre sur les log
+					File ff = new File("analyse/durees.csv"); // définir l'arborescence
+					try {
+						ff.createNewFile();
+						FileWriter ffw = new FileWriter(ff, true);
+						double duree = LogicalDuration.soustract(d, Constantes.tempsDepart).getTotalOfMinutes();
+					
+						ffw.append(duree + ";");
+
+						ffw.close(); // fermer le fichier à la fin des traitements
+
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 
 					missionCompleted = true;
 
@@ -359,7 +385,7 @@ public class EntityMouvementSequenceurDrone extends EntityMouvementSequenceur im
 						vitesseEnsurface);
 				mv = rectilinearMover;
 
-				Logger.Information(Owner(), "Come back ",String.format(Messages.ComeBack,  getPosition(d)));
+				Logger.Information(Owner(), "Come back ", String.format(Messages.ComeBack, getPosition(d)));
 				// on termine le mouvement en cours d'execution
 				if (positionNumberBeforeInterruption % 2 == 0) {
 
@@ -374,7 +400,7 @@ public class EntityMouvementSequenceurDrone extends EntityMouvementSequenceur im
 
 			// au cas ou la mission est terminee
 			else {
-		
+
 				rectilinearMover = new RectilinearMover(d, mv.getPosition(d), ini.getPositionsCles().get("A"),
 						vitesseEnsurface);
 				mv = rectilinearMover;
@@ -391,16 +417,15 @@ public class EntityMouvementSequenceurDrone extends EntityMouvementSequenceur im
 		public void Process() {
 			// TODO Auto-generated method stub
 			// retourner au bateau
-			LogicalDateTime d = getCurrentLogicalDate();	
+			LogicalDateTime d = getCurrentLogicalDate();
 			Logger.Information(Owner(), "Process Montee", String.format(Messages.Montee, getPosition(d)));
 			// On calcule les coordonnées du point de Montée
-			if( mv.getPosition(d).getZ() < 0) {
-			Point3D pointSurface = new Point3D(mv.getPosition(d).getX(), mv.getPosition(d).getY(), 0);
-			rectilinearMover = new RectilinearMover(d, mv.getPosition(d), pointSurface, vitesseMontee);
-			mv = rectilinearMover;
-			Post(new ComeBack(), mv.getDurationToReach());
-			}
-			else {	
+			if (mv.getPosition(d).getZ() < 0) {
+				Point3D pointSurface = new Point3D(mv.getPosition(d).getX(), mv.getPosition(d).getY(), 0);
+				rectilinearMover = new RectilinearMover(d, mv.getPosition(d), pointSurface, vitesseMontee);
+				mv = rectilinearMover;
+				Post(new ComeBack(), mv.getDurationToReach());
+			} else {
 				Post(new ComeBack());
 			}
 		}
@@ -414,7 +439,8 @@ public class EntityMouvementSequenceurDrone extends EntityMouvementSequenceur im
 			// TODO Auto-generated method stub
 			// retourner au bateau
 			LogicalDateTime d = getCurrentLogicalDate();
-			Logger.Information(Owner(), "Process MissionComplete", String.format(Messages.MissionCompleted,getPosition(d)));
+			Logger.Information(Owner(), "Process MissionComplete",
+					String.format(Messages.MissionCompleted, getPosition(d)));
 			// On calcule les coordonnees du point de plongee
 			missionCompleted = true;
 			Post(new Montee(), LogicalDuration.ofSeconds(1));
@@ -426,7 +452,7 @@ public class EntityMouvementSequenceurDrone extends EntityMouvementSequenceur im
 		public void Process() {
 			LogicalDateTime d = getCurrentLogicalDate();
 			staticMover = new StaticMover(mv.getPosition(d), mv.getVitesse(d));
-			Logger.Information(Owner(), "Process Arret",  String.format(Messages.Arret, mv.getPosition(d)));
+			Logger.Information(Owner(), "Process Arret", String.format(Messages.Arret, mv.getPosition(d)));
 			mv = staticMover;
 		}
 
