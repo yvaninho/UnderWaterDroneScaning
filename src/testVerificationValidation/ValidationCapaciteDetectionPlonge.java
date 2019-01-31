@@ -23,7 +23,7 @@ public class ValidationCapaciteDetectionPlonge extends AbstractTest {
 	@Test
 	public void test() throws FilloException {
 		query();
-		// testDureeScan(); // test si les scan s'effectue tous après 1 minute
+		testDureeScan(); // test si les scan s'effectue tous après 1 minute
 		testplongeeRotationMontee(); // test si chaque plongée s'effectue a une distance de 10m
 
 	}
