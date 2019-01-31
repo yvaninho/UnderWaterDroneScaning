@@ -31,7 +31,7 @@ public class ValidationCapaciteDetectionPlonge extends AbstractTest {
 	@Override
 	public String filePath() {
 
-		return "UnderWaterDetection.xlsx";
+		return "1548885638358UnderWaterDetection.xlsx";
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class ValidationCapaciteDetectionPlonge extends AbstractTest {
 		String strQuery1 = "Select * from Logs where Message like '%Start Track Target%'";
 		Recordset recordset1 = getConnectionFile().executeQuery(strQuery1);
 
-		String strQuery2 = "Select * from Logs where Message like 'Start Plonge%Drone Observation 1'";
+		String strQuery2 = "Select * from Logs where Message like '%Start Plongee Drone Observation 1%'";
 		Recordset recordset2 = getConnectionFile().executeQuery(strQuery2);
 
 		String strQuery3 = "Select * from Logs where Message like '%Start Turn Around%'";
